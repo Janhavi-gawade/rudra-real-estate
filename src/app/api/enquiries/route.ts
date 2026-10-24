@@ -1,10 +1,21 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { sendLeadAlertEmail } from '@/lib/mailer';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, phone, email, enquiryType, preferredDate, preferredTime, budget, message, propertyId } = body;
+    const {
+      name,
+      phone,
+      email,
+      enquiryType,
+      preferredDate,
+      preferredTime,
+      budget,
+      message,
+      propertyId,
+    } = body;
 
     if (!name || !phone) {
       return NextResponse.json(
@@ -27,6 +38,18 @@ export async function POST(request: Request) {
         status: 'NEW',
       },
     });
+
+    // Send email alert to client's email (rudrapropertypune@gmail.com)
+    sendLeadAlertEmail({
+      clientName: name,
+      clientPhone: phone,
+      clientEmail: email,
+      enquiryType: enquiryType || 'GENERAL',
+      requirement: budget,
+      message,
+      preferredDate,
+      preferredTime,
+    }).catch((err) => console.error('Background mailer error:', err));
 
     return NextResponse.json({ success: true, enquiry }, { status: 201 });
   } catch (error: any) {
