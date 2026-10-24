@@ -1,0 +1,120 @@
+// This is your Prisma schema file for Rudra Property
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Property {
+  id               String            @id @default(cuid())
+  propertyCode     String            @unique // e.g. "RP-101"
+  title            String
+  slug             String            @unique
+  description      String
+  listingType      String            // "BUY", "RENT", "INVEST"
+  propertyType     String            // "Apartment", "Penthouse", "Villa", "Commercial Office", "Shop"
+  bhk              Int               // 1, 2, 3, 4, 5
+  price            Float             // In INR, e.g. 8500000
+  priceDisplay     String?           // e.g. "₹85 Lakhs", "₹1.45 Cr", "₹38,000 / mo"
+  carpetArea       Int               // in sq.ft.
+  superArea        Int?              // in sq.ft.
+  bedrooms         Int
+  bathrooms        Int
+  balconies        Int               @default(1)
+  floor            String?           // e.g. "12th of 24 Floors"
+  totalFloors      Int?
+  furnishing       String            // "Unfurnished", "Semi-Furnished", "Fully Furnished"
+  possessionStatus String            // "Ready to Move", "Under Construction"
+  possessionDate   String?           // e.g. "Immediate", "Dec 2026"
+  locality         String            // "Keshav Nagar", "Mundhwa", "Kharadi", "Hadapsar", "Kalyani Nagar", "Koregaon Park"
+  address          String
+  landmark         String?
+  latitude         Float?
+  longitude        Float?
+  reraNumber       String?           // e.g. "P52100028912"
+  isFeatured       Boolean           @default(false)
+  isVerified       Boolean           @default(true)
+  status           String            @default("AVAILABLE") // "AVAILABLE", "UNDER_OFFER", "SOLD"
+  viewsCount       Int               @default(0)
+  videoUrl         String?
+  brochureUrl      String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  images           PropertyImage[]
+  amenities        PropertyAmenity[]
+  enquiries        Enquiry[]
+}
+
+model PropertyImage {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url        String
+  caption    String?
+  isCover    Boolean  @default(false)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model Amenity {
+  id         String            @id @default(cuid())
+  name       String            @unique
+  icon       String            // Lucide icon name, e.g. "Waves", "Dumbbell", "Shield", "Car", "TreePine"
+  category   String            @default("General") // "Lifestyle", "Security", "Sports", "Convenience"
+  properties PropertyAmenity[]
+}
+
+model PropertyAmenity {
+  propertyId String
+  amenityId  String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  amenity    Amenity  @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+
+  @@id([propertyId, amenityId])
+}
+
+model Enquiry {
+  id                String    @id @default(cuid())
+  propertyId        String?
+  property          Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  name              String
+  phone             String
+  email             String?
+  enquiryType       String    @default("GENERAL") // "GENERAL", "SCHEDULE_VISIT", "PRICE_INQUIRY", "CALL_REQUEST"
+  preferredDate     String?
+  preferredTime     String?
+  budget            String?
+  message           String?
+  status            String    @default("NEW") // "NEW", "CONTACTED", "VISIT_SCHEDULED", "CONVERTED", "CLOSED"
+  internalNotes     String?
+  followUpDate      DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  clientName  String
+  location    String
+  rating      Int      @default(5)
+  comment     String
+  avatar      String?
+  isPublished Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+}

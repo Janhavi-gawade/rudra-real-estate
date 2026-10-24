@@ -1,26 +1,111 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --navy-950: #050E21;
+    --navy-900: #08183A;
+    --navy-800: #0D224D;
+    --navy-700: #143168;
+    --gold-600: #B2881E;
+    --gold-500: #C59B27;
+    --gold-400: #D8AF3F;
+    --gold-300: #EAD07C;
+    --gold-100: #FAF5E6;
+    --ivory-50: #FAF8F5;
+    --ivory-100: #F3EFE6;
+  }
+
+  body {
+    background-color: #FAF8F5;
+    color: #1A202C;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Luxury gold gradients */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #B2881E 0%, #E0B345 35%, #F7D788 50%, #B2881E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #C59B27 0%, #E0B345 50%, #B2881E 100%);
+}
+
+.navy-gradient-bg {
+  background: linear-gradient(145deg, #050E21 0%, #08183A 60%, #0D224D 100%);
+}
+
+/* Shimmer Animation on Buttons and Cards */
+@keyframes goldShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.gold-shimmer-btn {
+  background: linear-gradient(90deg, #B2881E 0%, #E0B345 30%, #FBE9B6 50%, #E0B345 70%, #B2881E 100%);
+  background-size: 200% auto;
+  transition: all 0.4s ease;
+}
+
+.gold-shimmer-btn:hover {
+  background-position: right center;
+  box-shadow: 0 10px 25px -5px rgba(197, 155, 39, 0.45);
+}
+
+/* Card Luxury Glow & Micro-interactions */
+.luxury-card {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+}
+
+.luxury-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(197, 155, 39, 0.5);
+  box-shadow: 0 20px 35px -10px rgba(8, 24, 58, 0.14), 0 0 20px -3px rgba(197, 155, 39, 0.2);
+}
+
+/* Radar pulse animation for Live Online WhatsApp */
+@keyframes radarPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.radar-online {
+  animation: radarPulse 2s infinite;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1EFEA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C4BFB5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C59B27;
 }
