@@ -22,9 +22,10 @@ export default function ClientShell({ children }: { children: React.ReactNode })
 
     // Trigger popup immediately on page visit
     const timer = setTimeout(() => {
-      // Check if user has already submitted a lead in this session, otherwise prompt them
+      // Check if user has already submitted a lead or dismissed it in this session
       const alreadySubmitted = localStorage.getItem('rudra_lead_filled');
-      if (!alreadySubmitted) {
+      const alreadyDismissed = sessionStorage.getItem('rudra_modal_dismissed');
+      if (!alreadySubmitted && !alreadyDismissed) {
         setIsEnquiryOpen(true);
       }
     }, 800);
