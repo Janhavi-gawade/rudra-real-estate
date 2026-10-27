@@ -16,19 +16,22 @@ export default function ClientShell({ children }: { children: React.ReactNode })
   useEffect(() => {
     if (isAdmin) return;
 
+    // Clear any previous dismiss flags so form ALWAYS flashes
+    try {
+      localStorage.removeItem('rudra_lead_filled');
+      sessionStorage.removeItem('rudra_modal_dismissed');
+    } catch (e) {
+      // Ignore storage errors if any
+    }
+
     // Listen for custom open events from Header, Hero, Floating Buttons
     const handleOpen = () => setIsEnquiryOpen(true);
     window.addEventListener('open-enquiry-modal', handleOpen);
 
-    // Trigger popup immediately on page visit
+    // Flash popup unconditionally on every visit (both mobile and desktop)
     const timer = setTimeout(() => {
-      // Check if user has already submitted a lead or dismissed it in this session
-      const alreadySubmitted = localStorage.getItem('rudra_lead_filled');
-      const alreadyDismissed = sessionStorage.getItem('rudra_modal_dismissed');
-      if (!alreadySubmitted && !alreadyDismissed) {
-        setIsEnquiryOpen(true);
-      }
-    }, 800);
+      setIsEnquiryOpen(true);
+    }, 600);
 
     return () => {
       clearTimeout(timer);

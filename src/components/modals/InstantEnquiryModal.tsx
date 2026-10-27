@@ -26,9 +26,6 @@ export default function InstantEnquiryModal({ isOpen, onClose }: InstantEnquiryM
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleDismiss = () => {
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('rudra_modal_dismissed', 'true');
-    }
     onClose();
   };
 
@@ -68,9 +65,6 @@ export default function InstantEnquiryModal({ isOpen, onClose }: InstantEnquiryM
       }
 
       setIsSuccess(true);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('rudra_lead_filled', 'true');
-      }
     } catch (err: any) {
       setErrorMsg(err.message || 'Something went wrong. Please call directly.');
     } finally {
@@ -112,11 +106,11 @@ export default function InstantEnquiryModal({ isOpen, onClose }: InstantEnquiryM
           <button
             type="button"
             onClick={handleDismiss}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white text-[#050E21] hover:bg-amber-100 font-bold text-xs shadow-lg transition-all active:scale-95 shrink-0"
+            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-white text-[#050E21] hover:bg-amber-50 font-bold text-xs shadow-md transition-all active:scale-95 shrink-0 border border-amber-300"
             aria-label="Skip enquiry and close modal"
           >
             <span>Skip</span>
-            <span className="bg-slate-200 text-slate-800 rounded-full w-4 h-4 flex items-center justify-center text-[11px] font-bold">✕</span>
+            <X className="w-4 h-4 text-slate-900 stroke-[3]" />
           </button>
         </div>
 
