@@ -25,23 +25,23 @@ export default function LocationSection({ onOpenEnquiry }: LocationSectionProps)
     <section
       id="project-location"
       ref={sectionRef}
-      className="relative py-28 sm:py-36 bg-[#040B18] text-white overflow-hidden"
+      className="relative py-14 sm:py-32 bg-[#040B18] text-white overflow-hidden"
     >
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C59B27]/20 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         {/* Section Header */}
-        <div className={`text-center max-w-3xl mx-auto mb-20 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#C59B27]/10 border border-[#C59B27]/30 text-[#EAD07C] text-[11px] font-semibold tracking-widest uppercase mb-4">
+        <div className={`text-center max-w-3xl mx-auto mb-8 sm:mb-20 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#C59B27]/10 border border-[#C59B27]/30 text-[#EAD07C] text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase mb-3 sm:mb-4">
             <Sparkles className="w-3.5 h-3.5 text-[#C59B27]" />
             <span>STRATEGIC CONNECTIVITY</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-light font-serif text-white tracking-tight mb-5">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-light font-serif text-white tracking-tight mb-3 sm:mb-5">
             {location.title}
           </h2>
 
-          <p className="text-sm sm:text-base text-slate-300/80 font-light leading-relaxed">
+          <p className="text-xs sm:text-base text-slate-300/80 font-light leading-relaxed">
             {location.subtitle}
           </p>
         </div>

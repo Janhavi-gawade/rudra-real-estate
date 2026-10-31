@@ -107,9 +107,9 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
         <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#C59B27] to-transparent" />
 
         {/* Header Bar with Monogram & Close Button */}
-        <div className="p-6 pb-4 flex items-start justify-between border-b border-white/10 shrink-0">
-          <div className="flex items-center space-x-3">
-            <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-[#C59B27]/50 bg-white p-0.5 shrink-0">
+        <div className="p-4 sm:p-6 pb-3 sm:pb-4 flex items-start justify-between border-b border-white/10 shrink-0">
+          <div className="flex items-center space-x-2.5 sm:space-x-3">
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden border border-[#C59B27]/50 bg-white p-0.5 shrink-0">
               <Image
                 src={identity.logo.src}
                 alt={identity.logo.alt}
@@ -118,12 +118,12 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
               />
             </div>
             <div>
-              <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#EAD07C] block">
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] font-semibold text-[#EAD07C] block">
                 {identity.projectName}
               </span>
               <h2
                 id="luxury-modal-heading"
-                className="text-lg sm:text-xl font-serif text-white tracking-wide"
+                className="text-base sm:text-xl font-serif text-white tracking-wide"
               >
                 DISCOVER YOUR DREAM HOME
               </h2>
@@ -133,7 +133,7 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
           <button
             type="button"
             onClick={handleDismiss}
-            className="p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors shrink-0"
+            className="p-1.5 sm:p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors shrink-0"
             aria-label="Dismiss and continue browsing"
           >
             <X className="w-5 h-5" />
@@ -141,7 +141,7 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
         </div>
 
         {/* Scrollable Form Body */}
-        <div className="p-6 sm:p-8 overflow-y-auto flex-1">
+        <div className="p-4 sm:p-8 overflow-y-auto flex-1">
           {isSuccess ? (
             <div className="text-center py-6 space-y-4">
               <div className="w-16 h-16 bg-[#C59B27]/15 border border-[#C59B27]/40 text-[#EAD07C] rounded-full flex items-center justify-center mx-auto">

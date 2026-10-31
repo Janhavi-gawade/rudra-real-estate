@@ -31,35 +31,35 @@ export default function FloorPlansSection({ onOpenEnquiry }: FloorPlansSectionPr
     <section
       id="project-plans"
       ref={sectionRef}
-      className="relative py-28 sm:py-36 bg-[#061024] text-white overflow-hidden"
+      className="relative py-14 sm:py-32 bg-[#061024] text-white overflow-hidden"
     >
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C59B27]/20 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         {/* Section Header */}
-        <div className={`text-center max-w-3xl mx-auto mb-16 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#C59B27]/10 border border-[#C59B27]/30 text-[#EAD07C] text-[11px] font-semibold tracking-widest uppercase mb-4">
+        <div className={`text-center max-w-3xl mx-auto mb-8 sm:mb-16 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#C59B27]/10 border border-[#C59B27]/30 text-[#EAD07C] text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase mb-3 sm:mb-4">
             <Layers className="w-3.5 h-3.5 text-[#C59B27]" />
             <span>CUSTOMIZABLE SCHEMATICS PRIOR TO SLAB CASTING</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-light font-serif text-white tracking-tight mb-5">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-light font-serif text-white tracking-tight mb-3 sm:mb-5">
             {floorPlans.title}
           </h2>
 
-          <p className="text-sm sm:text-base text-slate-300/80 font-light leading-relaxed">
+          <p className="text-xs sm:text-base text-slate-300/80 font-light leading-relaxed">
             {floorPlans.subtitle}
           </p>
         </div>
 
         {/* Configuration Selector Tabs */}
-        <div className={`flex flex-wrap items-center justify-center gap-3 mb-12 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
+        <div className={`flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
           {floorPlans.configurations.map((config) => (
             <button
               key={config.id}
               type="button"
               onClick={() => setSelectedConfigId(config.id)}
-              className={`px-6 py-3 rounded-full text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 ${
+              className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 ${
                 selectedConfigId === config.id
                   ? 'bg-[#C59B27] text-[#040B18] font-bold shadow-lg shadow-[#C59B27]/25 scale-105'
                   : 'bg-white/5 text-slate-300 hover:text-white hover:bg-white/10 border border-white/10'
@@ -71,7 +71,7 @@ export default function FloorPlansSection({ onOpenEnquiry }: FloorPlansSectionPr
         </div>
 
         {/* Active Configuration Showcase Card */}
-        <div className={`relative rounded-3xl overflow-hidden border border-[#C59B27]/30 bg-[#040B18] shadow-2xl p-6 sm:p-12 reveal-scale ${isVisible ? 'is-visible' : ''}`}>
+        <div className={`relative rounded-3xl overflow-hidden border border-[#C59B27]/30 bg-[#040B18] shadow-2xl p-4 sm:p-12 reveal-scale ${isVisible ? 'is-visible' : ''}`}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Visual Architectural Render Frame */}
             <div className="lg:col-span-7 relative h-72 sm:h-96 rounded-2xl overflow-hidden border border-white/10 bg-[#061024]">

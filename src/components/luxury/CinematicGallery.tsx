@@ -41,17 +41,17 @@ export default function CinematicGallery() {
     <section
       id="project-showcase"
       ref={sectionRef}
-      className="relative py-28 sm:py-36 bg-[#061024] text-white overflow-hidden"
+      className="relative py-14 sm:py-32 bg-[#061024] text-white overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         {/* Section Header */}
-        <div className={`flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
+        <div className={`flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-16 gap-5 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
           <div>
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#C59B27]/10 border border-[#C59B27]/30 text-[#EAD07C] text-[11px] font-semibold tracking-widest uppercase mb-4">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#C59B27]/10 border border-[#C59B27]/30 text-[#EAD07C] text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase mb-3 sm:mb-4">
               <Sparkles className="w-3.5 h-3.5 text-[#C59B27]" />
               <span>3D ARCHITECTURAL RENDERS</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light font-serif text-white tracking-tight">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-light font-serif text-white tracking-tight">
               Architectural Showcase
             </h2>
           </div>

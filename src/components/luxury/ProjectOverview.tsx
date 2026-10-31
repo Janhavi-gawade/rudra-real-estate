@@ -26,35 +26,35 @@ export default function ProjectOverview({ onOpenEnquiry }: ProjectOverviewProps)
     <section
       id="project-overview"
       ref={sectionRef}
-      className="relative py-28 sm:py-36 bg-[#040B18] text-white overflow-hidden"
+      className="relative py-14 sm:py-32 bg-[#040B18] text-white overflow-hidden"
     >
       {/* Subtle Ambient Background Vignette */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C59B27]/30 to-transparent" />
       <div className="absolute -top-40 right-1/4 w-96 h-96 rounded-full bg-[#C59B27]/5 blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         {/* Monograph Eyebrow & Title */}
-        <div className={`text-center max-w-3xl mx-auto mb-20 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#C59B27]/10 border border-[#C59B27]/30 text-[#EAD07C] text-[11px] font-semibold tracking-widest uppercase mb-4">
+        <div className={`text-center max-w-3xl mx-auto mb-10 sm:mb-20 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#C59B27]/10 border border-[#C59B27]/30 text-[#EAD07C] text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase mb-3 sm:mb-4">
             <HardHat className="w-3.5 h-3.5 text-[#C59B27]" />
             <span>UNDER-CONSTRUCTION PROJECT DOSSIER</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-light font-serif text-white tracking-tight mb-5">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-light font-serif text-white tracking-tight mb-3 sm:mb-5">
             {overview.title}
           </h2>
 
-          <p className="text-sm sm:text-base text-slate-300/80 font-light leading-relaxed">
+          <p className="text-xs sm:text-base text-slate-300/80 font-light leading-relaxed">
             {overview.description}
           </p>
         </div>
 
         {/* Minimalist Architectural Metric Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 mb-12 sm:mb-20">
           {overview.specifications.map((spec, index) => (
             <div
               key={index}
-              className={`relative p-8 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-[#C59B27]/40 backdrop-blur-sm transition-all duration-300 group reveal-fade-up ${
+              className={`relative p-5 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-[#C59B27]/40 backdrop-blur-sm transition-all duration-300 group reveal-fade-up ${
                 isVisible ? 'is-visible' : ''
               }`}
               style={{ transitionDelay: `${index * 80}ms` }}

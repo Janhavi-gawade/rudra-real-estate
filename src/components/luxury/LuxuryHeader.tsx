@@ -48,9 +48,9 @@ export default function LuxuryHeader({ onOpenEnquiry }: LuxuryHeaderProps) {
   ];
 
   const renderBrand = () => (
-    <Link href="/" className="flex items-center space-x-3 group">
+    <Link href="/" className="flex items-center space-x-2.5 sm:space-x-3 group min-w-0">
       {identity.logo.showEmblem && (
-        <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden border border-[#C59B27]/40 bg-white p-0.5 shrink-0 transition-transform duration-300 group-hover:scale-105">
+        <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden border border-[#C59B27]/40 bg-white p-0.5 shrink-0 transition-transform duration-300 group-hover:scale-105">
           <Image
             src={identity.logo.src}
             alt={identity.logo.alt}
@@ -60,11 +60,11 @@ export default function LuxuryHeader({ onOpenEnquiry }: LuxuryHeaderProps) {
           />
         </div>
       )}
-      <div className="flex flex-col">
-        <span className="text-base sm:text-lg font-serif tracking-wider text-white">
+      <div className="flex flex-col min-w-0">
+        <span className="text-sm sm:text-lg font-serif tracking-wider text-white truncate max-w-[210px] sm:max-w-none">
           {identity.projectName}
         </span>
-        <span className="text-[9px] uppercase tracking-[0.25em] text-[#EAD07C] flex items-center space-x-1">
+        <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#EAD07C] flex items-center space-x-1 whitespace-nowrap">
           <span className="w-1.5 h-1.5 rounded-full bg-[#C59B27] animate-pulse" />
           <span>Under Construction</span>
         </span>
@@ -76,8 +76,8 @@ export default function LuxuryHeader({ onOpenEnquiry }: LuxuryHeaderProps) {
     <header
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
         isScrolled
-          ? 'bg-[#040B18]/90 backdrop-blur-md border-b border-white/10 shadow-2xl py-3.5'
-          : 'bg-transparent py-5 sm:py-6'
+          ? 'bg-[#040B18]/95 backdrop-blur-md border-b border-white/10 shadow-2xl py-2.5 sm:py-3.5'
+          : 'bg-transparent py-3 sm:py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
@@ -125,7 +125,7 @@ export default function LuxuryHeader({ onOpenEnquiry }: LuxuryHeaderProps) {
             <button
               type="button"
               onClick={handleEnquiryClick}
-              className="px-5 py-2.5 rounded-full font-semibold text-xs tracking-wider uppercase text-[#040B18] gold-shimmer-btn shadow-md shadow-[#C59B27]/25 transition-all hover:scale-105 active:scale-95 flex items-center space-x-1.5"
+              className="hidden sm:flex px-5 py-2.5 rounded-full font-semibold text-xs tracking-wider uppercase text-[#040B18] gold-shimmer-btn shadow-md shadow-[#C59B27]/25 transition-all hover:scale-105 active:scale-95 items-center space-x-1.5"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#040B18]" />
               <span>Register</span>
