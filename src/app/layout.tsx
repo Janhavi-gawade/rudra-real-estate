@@ -1,32 +1,31 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import ClientShell from '@/components/layout/ClientShell';
+import { projectConfig } from '@/config/projectConfig';
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
-  title: "Rudra Property | Pune's Trusted Real Estate Partner | Keshav Nagar, Kharadi, Mundhwa",
-  description:
-    "Discover verified luxury apartments, penthouses, and commercial spaces across Keshav Nagar, Mundhwa, Kharadi, Koregaon Park, and Hadapsar. Office No. 47, Prestige Chamber.",
+  title: `${projectConfig.identity.projectName} | ${projectConfig.identity.tagline}`,
+  description: projectConfig.hero.subheadline,
   keywords: [
-    'Rudra Property Pune',
-    'Real Estate Agent Keshav Nagar',
-    'Flats in Mundhwa',
-    'Luxury Apartments Kharadi',
-    'Koregaon Park Penthouses',
-    'Pune Property Consultant',
+    'The Riviera Reserve Pune',
+    'Luxury Apartments Keshav Nagar',
+    'Pune Sky Mansions',
+    'Koregaon Park Luxury Flats',
+    'Riverfront Residences Pune',
+    'Under Construction Luxury Projects Pune',
   ],
   openGraph: {
-    title: "Rudra Property | Your Property. Our Priority.",
-    description:
-      "Pune's premier real estate consultancy. Residential, Commercial, Investment, and Rental Solutions in Keshav Nagar, Mundhwa & Kharadi.",
-    url: 'https://rudrapropertypune.com',
-    siteName: 'Rudra Property Consultancy',
+    title: `${projectConfig.identity.projectName} | ${projectConfig.identity.tagline}`,
+    description: projectConfig.hero.subheadline,
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://rudrapropertypune.com',
+    siteName: projectConfig.identity.projectName,
     images: [
       {
-        url: '/branding/rudra-banner.png',
+        url: projectConfig.hero.fallbackPoster,
         width: 1200,
         height: 630,
-        alt: 'Rudra Property Pune',
+        alt: projectConfig.identity.projectName,
       },
     ],
     locale: 'en_IN',
@@ -41,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans antialiased">
+      <body className="min-h-screen bg-[#040B18] text-[#FAF8F5] font-sans antialiased">
         <ClientShell>{children}</ClientShell>
       </body>
     </html>
