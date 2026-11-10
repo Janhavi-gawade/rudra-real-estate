@@ -1,17 +1,16 @@
-// This is your Prisma schema file for Rudra Property
+// Prisma schema for Rudra Real Estate (MongoDB Atlas)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model Property {
-  id               String            @id @default(cuid())
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
   propertyCode     String            @unique // e.g. "RP-101"
   title            String
   slug             String            @unique
@@ -52,8 +51,8 @@ model Property {
 }
 
 model PropertyImage {
-  id         String   @id @default(cuid())
-  propertyId String
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  propertyId String   @db.ObjectId
   property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   url        String
   caption    String?
@@ -63,7 +62,7 @@ model PropertyImage {
 }
 
 model Amenity {
-  id         String            @id @default(cuid())
+  id         String            @id @default(auto()) @map("_id") @db.ObjectId
   name       String            @unique
   icon       String            // Lucide icon name, e.g. "Waves", "Dumbbell", "Shield", "Car", "TreePine"
   category   String            @default("General") // "Lifestyle", "Security", "Sports", "Convenience"
@@ -71,17 +70,18 @@ model Amenity {
 }
 
 model PropertyAmenity {
-  propertyId String
-  amenityId  String
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  propertyId String   @db.ObjectId
+  amenityId  String   @db.ObjectId
   property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   amenity    Amenity  @relation(fields: [amenityId], references: [id], onDelete: Cascade)
 
-  @@id([propertyId, amenityId])
+  @@unique([propertyId, amenityId], name: "propertyId_amenityId")
 }
 
 model Enquiry {
-  id                String    @id @default(cuid())
-  propertyId        String?
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  propertyId        String?   @db.ObjectId
   property          Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
   name              String
   phone             String
@@ -99,7 +99,7 @@ model Enquiry {
 }
 
 model AdminUser {
-  id           String   @id @default(cuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   username     String   @unique
   email        String   @unique
   passwordHash String
@@ -109,7 +109,7 @@ model AdminUser {
 }
 
 model Testimonial {
-  id          String   @id @default(cuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   clientName  String
   location    String
   rating      Int      @default(5)
