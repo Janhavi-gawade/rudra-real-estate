@@ -13,13 +13,29 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
+  async redirects() {
+    return [
+      {
+        source: '/about',
+        destination: '/#project-overview',
+        permanent: false,
       },
-    },
+      {
+        source: '/properties',
+        destination: '/#project-plans',
+        permanent: false,
+      },
+      {
+        source: '/compare',
+        destination: '/',
+        permanent: false,
+      },
+      {
+        source: '/favourites',
+        destination: '/',
+        permanent: false,
+      },
+    ];
   },
 };
 

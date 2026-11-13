@@ -19,8 +19,26 @@ export interface ProjectConfig {
     subheadline: string;
     primaryCtaText: string;
     secondaryCtaText: string;
-    youtubeId?: string; // High-definition ambient background loop
+    youtubeId?: string;
     fallbackPoster: string;
+  };
+  underConstructionPortfolio: {
+    title: string;
+    subtitle: string;
+    badge: string;
+    projects: {
+      id: string;
+      name: string;
+      location: string;
+      stage: string;
+      progress: number;
+      typology: string;
+      possession: string;
+      priceStarting: string;
+      reraNumber: string;
+      imageUrl: string;
+      isFlagship?: boolean;
+    }[];
   };
   constructionProgress: {
     title: string;
@@ -32,7 +50,6 @@ export interface ProjectConfig {
     milestones: {
       step: number;
       title: string;
-      description: string;
       status: 'COMPLETED' | 'IN_PROGRESS' | 'UPCOMING';
       percentage: number;
       targetDate: string;
@@ -50,7 +67,6 @@ export interface ProjectConfig {
       id: string;
       title: string;
       tag: string;
-      description: string;
       youtubeId: string;
       posterUrl: string;
       duration: string;
@@ -63,7 +79,6 @@ export interface ProjectConfig {
     specifications: {
       label: string;
       value: string;
-      description?: string;
     }[];
   };
   gallery: {
@@ -126,123 +141,120 @@ export interface ProjectConfig {
 export const projectConfig: ProjectConfig = {
   identity: {
     projectName: "THE RIVIERA RESERVE",
-    tagline: "Exclusive Under-Construction Private Residences & Sky Mansions",
+    tagline: "Exclusively Under-Construction Luxury Residences",
     developerName: "Rudra Luxury Developments",
     reraNumber: "P52100028912 (MahaRERA Registered)",
     projectStatus: "Under Construction",
-    statusBadge: "UNDER CONSTRUCTION • ACTIVE SUPERSTRUCTURE PROGRESS",
+    statusBadge: "EXCLUSIVELY UNDER CONSTRUCTION • ACTIVE 14TH SLAB",
     logo: {
       src: "/branding/rudra-logo.jpg",
-      alt: "The Riviera Reserve - Rudra",
+      alt: "The Riviera Reserve - Under Construction",
       placement: "left",
       showEmblem: true,
     },
   },
 
   hero: {
-    eyebrow: "EXCLUSIVE UNDER-CONSTRUCTION LANDMARK • PUNE",
-    headline: "WHERE LUXURY MEETS ARCHITECTURAL VISION",
+    eyebrow: "PUNE RIVERFRONT • EXCLUSIVELY UNDER CONSTRUCTION",
+    headline: "UNDER-CONSTRUCTION RIVERFRONT RESIDENCES",
     subheadline:
-      "Witness the rise of Pune's most exclusive riverfront residential masterpiece. Currently under active construction with delivery slated for December 2027.",
-    primaryCtaText: "EXPLORE THE RESIDENCE",
-    secondaryCtaText: "REGISTER INTEREST",
-    // 4K Architectural Ambient Flythrough Video ID
+      "A limited collection of 72 private residences, currently under active superstructure construction along Pune's scenic riverfront corridor with possession certified for December 2027.",
+    primaryCtaText: "VIEW LIVE CONSTRUCTION",
+    secondaryCtaText: "BOOK HARDHAT SITE TOUR",
     youtubeId: "Er5ojikZizc",
     fallbackPoster:
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=85",
   },
 
-  constructionProgress: {
-    title: "CONSTRUCTION STATUS & LIVE MILESTONES",
-    subtitle: "Quarterly Engineering Progress • Verified MahaRERA Construction Milestones",
-    currentStage: "Superstructure 14th Floor Slab Casting in Active Progress",
-    overallProgress: 48,
-    targetPossession: "December 2027 (RERA Timeline Compliant)",
-    reraFilingDate: "Quarterly Progress Report: Q3 2026 Verified",
-    milestones: [
+  underConstructionPortfolio: {
+    badge: "UNDER-CONSTRUCTION PORTFOLIO",
+    title: "EXCLUSIVELY UNDER-CONSTRUCTION DEVELOPMENTS",
+    subtitle: "Rudra Luxury Developments — Curating High-Appreciation Riverfront Landmarks Prior to Handover",
+    projects: [
       {
-        step: 1,
-        title: "Substructure & Deep Raft Piling",
-        description: "100% completed seismic-resistant foundation anchored into basalt bedrock.",
-        status: "COMPLETED",
-        percentage: 100,
-        targetDate: "Completed",
+        id: "proj-riviera-reserve",
+        name: "The Riviera Reserve (Flagship)",
+        location: "Keshav Nagar – Mundhwa Riverfront",
+        stage: "Active 14th Floor Slab Pouring",
+        progress: 48,
+        typology: "3 & 4 BHK Sky Mansions",
+        possession: "December 2027",
+        priceStarting: "₹1.25 Cr*",
+        reraNumber: "P52100028912",
+        imageUrl:
+          "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=85",
+        isFlagship: true,
       },
       {
-        step: 2,
-        title: "Double-Height Podium & Parking",
-        description: "Podium slab cast with dedicated EV charging ducting and drainage.",
-        status: "COMPLETED",
-        percentage: 100,
-        targetDate: "Completed",
+        id: "proj-riviera-horizon",
+        name: "The Riviera Horizon",
+        location: "Koregaon Park Extension Corridor",
+        stage: "Double-Height Podium & EV Bays",
+        progress: 28,
+        typology: "4 BHK Riverfront Penthouses",
+        possession: "June 2028",
+        priceStarting: "₹2.10 Cr*",
+        reraNumber: "P52100030114",
+        imageUrl:
+          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85",
       },
       {
-        step: 3,
-        title: "Tower Superstructure (28 Floors)",
-        description: "Floor 14 slab cast. High-grade M60 concrete monolithic pouring in progress.",
-        status: "IN_PROGRESS",
-        percentage: 52,
-        targetDate: "Q2 2027",
-      },
-      {
-        step: 4,
-        title: "Curtain Glazing & Acoustic Facade",
-        description: "German double-glazed facade panels and cantilevered sundeck framing.",
-        status: "UPCOMING",
-        percentage: 0,
-        targetDate: "Q3 2027",
-      },
-      {
-        step: 5,
-        title: "Bespoke MEP, Club & Interior Finishes",
-        description: "Italian marble flooring, elevator commissioning, and resort clubhouse.",
-        status: "UPCOMING",
-        percentage: 0,
-        targetDate: "Q4 2027",
-      },
-      {
-        step: 6,
-        title: "Final Inspections & Key Handover",
-        description: "MahaRERA occupancy certificate (OC) verification and VIP handover.",
-        status: "UPCOMING",
-        percentage: 0,
-        targetDate: "Dec 2027",
+        id: "proj-riviera-promenade",
+        name: "The Riviera Promenade",
+        location: "Riverside Sanctuary, Mundhwa",
+        stage: "Deep Raft Basalt Piling",
+        progress: 15,
+        typology: "3 BHK Biophilic Residences",
+        possession: "December 2028",
+        priceStarting: "₹1.45 Cr*",
+        reraNumber: "P52100031890",
+        imageUrl:
+          "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=85",
       },
     ],
-    investorAdvantages: [
+  },
+
+  overview: {
+    title: "UNDER-CONSTRUCTION PROJECT DOSSIER",
+    subtitle: "Active Superstructure • MahaRERA Certified Milestones",
+    description:
+      "Exclusively under-construction. Engineered with high-strength monolithic RCC and acoustic double glazing, each private residence features unblocked riverfront vistas and construction-linked tranches.",
+    specifications: [
       {
-        title: "Construction-Linked Plan",
-        description: "Pay progressively in transparent tranches tied strictly to certified slab casting milestones.",
-        iconName: "ShieldCheck",
+        label: "Construction Stage",
+        value: "14th Slab Underway",
       },
       {
-        title: "Pre-Handover Capital Gain",
-        description: "Benefit from anticipated 28-35% price appreciation between under-construction and possession.",
-        iconName: "TrendingUp",
+        label: "Available Typology",
+        value: "3 & 4 BHK Sky Mansions",
       },
       {
-        title: "Custom Interior Layouts",
-        description: "Work with our architectural team to customize room flow and sundecks before final MEP casting.",
-        iconName: "Layers",
+        label: "Location Corridor",
+        value: "Keshav Nagar – Koregaon Park Ext.",
       },
       {
-        title: "MahaRERA Escrow Security",
-        description: "70% of investor funds securely ring-fenced in a dedicated project escrow account.",
-        iconName: "Lock",
+        label: "Pre-Launch Starting",
+        value: "₹1.25 Cr*",
+      },
+      {
+        label: "Possession Target",
+        value: "December 2027",
+      },
+      {
+        label: "MahaRERA ID",
+        value: "P52100028912",
       },
     ],
   },
 
   animationVideos: {
-    title: "CINEMATIC 3D ANIMATION & WALKTHROUGHS",
-    subtitle: "Immerse Yourself in High-Definition 3D Walkthroughs and Architectural Drone Perspectives",
+    title: "3D PRE-CONSTRUCTION CINEMA",
+    subtitle: "Visualizing the architecture prior to final possession",
     videos: [
       {
         id: "video-pune-highrise",
-        title: "High-Rise Architectural 3D Walkthrough",
-        tag: "3D ARCHITECTURAL RENDER",
-        description:
-          "Cinematic 3D animation gliding through the grand entrance, cantilevered sky terraces, landscaped podium, and riverfront vistas.",
+        title: "Architectural Exterior & Riverfront",
+        tag: "EXTERIOR 3D TOUR",
         youtubeId: "Er5ojikZizc",
         posterUrl:
           "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=85",
@@ -250,10 +262,8 @@ export const projectConfig: ProjectConfig = {
       },
       {
         id: "video-ultra-luxury",
-        title: "Ultra-Luxury Sky Mansions & Terraces",
-        tag: "VIRTUAL WALKTHROUGH",
-        description:
-          "Experience the sheer grandeur of the 4 BHK sky suites, double-height living salons, and private sunset terraces.",
+        title: "4 BHK Sky Mansion Interior",
+        tag: "INTERIOR WALKTHROUGH",
         youtubeId: "TZbnTChYqx0",
         posterUrl:
           "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85",
@@ -261,10 +271,8 @@ export const projectConfig: ProjectConfig = {
       },
       {
         id: "video-skyline-cinema",
-        title: "4K Architectural Visualization Tour",
-        tag: "CINEMATIC WALKTHROUGH",
-        description:
-          "Hyper-realistic 4K architectural render tour capturing the sunrise lighting, imported Italian travertine, and sky observatory.",
+        title: "Sky Penthouse & Observatory Deck",
+        tag: "PENTHOUSE TOUR",
         youtubeId: "XtuJBAo0BJA",
         posterUrl:
           "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=85",
@@ -272,10 +280,8 @@ export const projectConfig: ProjectConfig = {
       },
       {
         id: "video-amenities-tour",
-        title: "Resort Clubhouse & Infinity Horizon Deck",
-        tag: "AMENITY PRECINCT PREVIEW",
-        description:
-          "Virtual tour of the 40,000 sq. ft. private resident clubhouse, infinity lap pool, screening salon, and zen meditation grove.",
+        title: "Clubhouse & Horizon Lap Pool",
+        tag: "AMENITY TOUR",
         youtubeId: "pkWz1l2WdcY",
         posterUrl:
           "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=85",
@@ -284,85 +290,121 @@ export const projectConfig: ProjectConfig = {
     ],
   },
 
-  overview: {
-    title: "THE UNDER-CONSTRUCTION MASTERPIECE",
-    subtitle: "A Biophilic Riverfront Landmark Rising in Pune",
-    description:
-      "Rising on the banks of Pune's scenic riverfront corridor, The Riviera Reserve is an exclusively under-construction landmark engineered to international standards. Built with high-strength monolithic RCC and acoustic glazing, every residence features cantilevered private sundecks and unblocked panoramic vistas.",
-    specifications: [
+  constructionProgress: {
+    title: "LIVE CONSTRUCTION STATUS",
+    subtitle: "Active on-site progress • Handover December 2027",
+    currentStage: "14th Floor Superstructure Slab in Progress",
+    overallProgress: 48,
+    targetPossession: "December 2027",
+    reraFilingDate: "Q3 2026 MahaRERA Inspection Verified",
+    milestones: [
       {
-        label: "Project Status",
-        value: "Under Construction",
-        description: "Active superstructure works underway • 14th Slab",
+        step: 1,
+        title: "Substructure & Deep Raft Piling",
+        status: "COMPLETED",
+        percentage: 100,
+        targetDate: "Completed",
       },
       {
-        label: "Available Typologies",
-        value: "3 & 4 BHK Sky Mansions",
-        description: "Limited collection of 72 private residences",
+        step: 2,
+        title: "Podium & Multi-Level Parking",
+        status: "COMPLETED",
+        percentage: 100,
+        targetDate: "Completed",
       },
       {
-        label: "Prime Location",
-        value: "Keshav Nagar – Koregaon Park Extension",
-        description: "Minutes from Koregaon Park & Kharadi IT corridor",
+        step: 3,
+        title: "Superstructure (Floor 14 of 28)",
+        status: "IN_PROGRESS",
+        percentage: 52,
+        targetDate: "Q2 2027",
       },
       {
-        label: "Starting Price",
-        value: "₹1.25 Cr*",
-        description: "Exclusive pre-launch construction-linked tranches",
+        step: 4,
+        title: "Curtain Glazing & Facade",
+        status: "UPCOMING",
+        percentage: 0,
+        targetDate: "Q3 2027",
       },
       {
-        label: "Target Possession",
-        value: "December 2027",
-        description: "Strictly aligned with MahaRERA milestones",
+        step: 5,
+        title: "Clubhouse & Interior Finishes",
+        status: "UPCOMING",
+        percentage: 0,
+        targetDate: "Q4 2027",
       },
       {
-        label: "Architectural Pedigree",
-        value: "Biophilic High-Rise",
-        description: "Double-height landscaped sky decks & green facades",
+        step: 6,
+        title: "Occupancy Certificate & Handover",
+        status: "UPCOMING",
+        percentage: 0,
+        targetDate: "Dec 2027",
+      },
+    ],
+    investorAdvantages: [
+      {
+        title: "Construction-Linked Plan",
+        description: "Payments aligned directly to certified slab casting milestones.",
+        iconName: "ShieldCheck",
+      },
+      {
+        title: "MahaRERA Escrow Account",
+        description: "70% of buyer funds securely held in project escrow account.",
+        iconName: "Lock",
+      },
+      {
+        title: "Early Stage Price Advantage",
+        description: "Significant capital appreciation anticipated by possession.",
+        iconName: "TrendingUp",
+      },
+      {
+        title: "Custom Interior Layouts",
+        description: "Opportunity to modify room flow prior to final slab pouring.",
+        iconName: "Layers",
       },
     ],
   },
 
   gallery: {
-    categories: ["All", "Architecture", "Living Spaces", "Sky Decks", "Arrival"],
+    categories: ["All", "Architecture", "Interiors", "Sky Decks"],
     items: [
       {
         id: "facade-tower",
-        title: "Iconic Tower Facade",
+        title: "Tower Silhouette",
         category: "Architecture",
-        caption: "Contemporary crystalline silhouette bathed in golden twilight.",
+        caption: "Crystalline high-rise architecture along the riverfront.",
         imageUrl:
           "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=85",
       },
       {
         id: "grand-foyer",
-        title: "Double-Height Grand Lobby",
-        category: "Arrival",
-        caption: "Soaring 24-foot entrance atrium with imported Italian travertine.",
+        title: "Grand Arrival Lobby",
+        category: "Architecture",
+        caption: "24-foot double-height foyer with Italian marble finishes.",
         imageUrl:
           "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85",
       },
       {
         id: "master-salon",
-        title: "Expansive Master Salon",
-        category: "Living Spaces",
-        caption: "Seamless open-plan design capturing uninterrupted horizon views.",
+        title: "Master Living Salon",
+        category: "Interiors",
+        caption: "Open-plan living space framed by floor-to-ceiling glass.",
         imageUrl:
           "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=85",
       },
       {
         id: "sky-deck",
-        title: "Cantilevered Sky Sundeck",
+        title: "Private Sky Sundeck",
         category: "Sky Decks",
-        caption: "Private 10-foot deep sundecks for alfresco entertaining.",
+        caption: "Cantilevered sundecks capturing panoramic river views.",
         imageUrl:
           "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=85",
       },
       {
         id: "penthouse-suite",
-        title: "Presidential Bedroom Suite",
-        category: "Living Spaces",
-        caption: "Engineered timber flooring with bespoke en-suite dressing salon.",
+        title: "Presidential Bedroom",
+        category: "Interiors",
+        caption: "Engineered timber floors with en-suite dressing salon.",
         imageUrl:
           "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85",
       },
@@ -370,7 +412,7 @@ export const projectConfig: ProjectConfig = {
         id: "evening-facade",
         title: "Architectural Illumination",
         category: "Architecture",
-        caption: "Warm accent illumination highlighting geometric terraces.",
+        caption: "Warm evening lighting across geometric terraces.",
         imageUrl:
           "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=85",
       },
@@ -378,65 +420,59 @@ export const projectConfig: ProjectConfig = {
   },
 
   amenities: {
-    title: "PRIVATE CLUB & RESORT EXPERIENCES",
-    subtitle: "Curated Wellness and Leisure Across 40,000 Sq. Ft.",
+    title: "UNDER-CONSTRUCTION AMENITY PRECINCT",
+    subtitle: "Curated experiences across 40,000 sq. ft.",
     items: [
       {
         id: "infinity-pool",
-        title: "Horizon Infinity Lap Pool",
+        title: "Horizon Lap Pool",
         category: "Wellness",
-        description:
-          "Temperature-regulated infinity pool with sun lounger submerged deck overlooking the river.",
+        description: "Temperature-regulated infinity pool overlooking the river.",
         imageUrl:
           "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=85",
         iconName: "Waves",
       },
       {
         id: "sky-lounge",
-        title: "Rooftop Observatory & Private Dining",
+        title: "Rooftop Observatory",
         category: "Lifestyle",
-        description:
-          "Private banquet salon and glass-encased observatory deck for exclusive resident gatherings.",
+        description: "Private dining terrace and 360-degree skyline lounge.",
         imageUrl:
           "https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=1200&q=85",
         iconName: "SunMedium",
       },
       {
         id: "wellness-gym",
-        title: "Bespoke Fitness & Yoga Pavilion",
+        title: "Fitness & Yoga Studio",
         category: "Wellness",
-        description:
-          "Fully equipped Technogym suite with dedicated pilates studio and outdoor meditation deck.",
+        description: "Equipped with Technogym suites and private yoga deck.",
         imageUrl:
           "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&w=1200&q=85",
         iconName: "Dumbbell",
       },
       {
         id: "zen-gardens",
-        title: "Biophilic Zen Reflexology Groves",
+        title: "Landscaped Zen Groves",
         category: "Nature",
-        description:
-          "Acre-wide sculpted green sanctuary with sensory water features and shaded reading pavilions.",
+        description: "Acre-wide green retreat with sensory water features.",
         imageUrl:
           "https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&w=1200&q=85",
         iconName: "Trees",
       },
       {
         id: "smart-security",
-        title: "3-Tier Biometric Shield & Valet",
+        title: "Biometric Access & Valet",
         category: "Convenience",
-        description:
-          "Keycard elevator access direct to private lobby with 24/7 concierge and EV charging bays.",
+        description: "Direct elevator access to private lobbies with 24/7 concierge.",
         imageUrl:
           "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=1200&q=85",
         iconName: "ShieldCheck",
       },
       {
         id: "clubhouse",
-        title: "The Resident Club & Foyer",
+        title: "The Resident Club",
         category: "Leisure",
-        description:
-          "Bespoke private screening theatre, billiards salon, and executive co-working boardroom.",
+        description: "Private screening theatre, billiards, and business salon.",
         imageUrl:
           "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=85",
         iconName: "Building2",
@@ -445,56 +481,50 @@ export const projectConfig: ProjectConfig = {
   },
 
   floorPlans: {
-    title: "UNDER-CONSTRUCTION SCHEMATICS & PLANS",
-    subtitle: "Customizable Architectural Layouts Prior to Final Slab Casting",
+    title: "UNDER-CONSTRUCTION SCHEMATICS",
+    subtitle: "Customizable layouts prior to slab casting",
     configurations: [
       {
         id: "3bhk-luxury",
-        bhk: "3 BHK Sky Residence",
-        title: "The Imperial 3 BHK Suite",
+        bhk: "3 BHK Residence",
+        title: "The Imperial Suite",
         carpetArea: "1,380 Sq. Ft.",
         superArea: "1,720 Sq. Ft.",
         priceStarting: "₹1.25 Cr*",
         highlights: [
-          "Double-height living & dining salon",
-          "East-facing riverview sundeck (60 sq. ft.)",
-          "Dedicated servant powder room",
-          "Master bedroom with walk-in wardrobe",
-          "2 covered podium car parking bays",
+          "Double-height living salon with river view sundeck",
+          "Master bedroom with private walk-in dressing space",
+          "2 dedicated covered podium car parking bays",
         ],
         diagramUrl:
           "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
       },
       {
         id: "4bhk-presidential",
-        bhk: "4 BHK Presidential Suite",
-        title: "The Royal 4 BHK Haven",
+        bhk: "4 BHK Sky Suite",
+        title: "The Royal Haven",
         carpetArea: "1,840 Sq. Ft.",
         superArea: "2,350 Sq. Ft.",
         priceStarting: "₹1.85 Cr*",
         highlights: [
-          "Private elevator access into your foyer",
+          "Private elevator access opening into exclusive foyer",
           "Wraparound dual sundecks with river vistas",
-          "Separate staff quarters with ensuite bath",
-          "Gourmet show kitchen plus wet prep area",
-          "3 covered podium car parking bays",
+          "3 dedicated covered podium car parking bays",
         ],
         diagramUrl:
           "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
       },
       {
         id: "penthouse-skyline",
-        bhk: "Sky Penthouse Duplex",
-        title: "The Sky Penthouse Crown",
+        bhk: "Sky Penthouse",
+        title: "The Crown Duplex",
         carpetArea: "2,850 Sq. Ft.",
         superArea: "3,650 Sq. Ft.",
         priceStarting: "Price on Request",
         highlights: [
-          "Double-height glass atrium with open sky views",
-          "Private rooftop plunge pool & party deck",
-          "Automated climate control & acoustic glazing",
-          "Bespoke private wellness spa & jacuzzi",
-          "4 covered parking bays with EV chargers",
+          "Double-height glass atrium with open sky vistas",
+          "Private rooftop plunge pool and sunset deck",
+          "4 dedicated covered parking bays with EV chargers",
         ],
         diagramUrl:
           "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
@@ -503,41 +533,41 @@ export const projectConfig: ProjectConfig = {
   },
 
   location: {
-    title: "PRIVILEGED LOCATION & CONNECTIVITY",
-    subtitle: "Strategically Placed at Pune's High-Growth Riverfront Nexus",
+    title: "LOCATION & CONNECTIVITY",
+    subtitle: "Minutes from Koregaon Park and Kharadi IT Hub",
     address:
       "The Riviera Reserve, Riverside Promenade, Keshav Nagar–Mundhwa Corridor, Pune 411036",
     mapQuery: "Prestige Chamber, Keshav Nagar, Mundhwa, Pune 411036",
     landmarks: [
       {
-        destination: "Koregaon Park North Main Road",
-        driveTime: "5 - 7 Mins",
-        category: "Lifestyle & Fine Dining",
+        destination: "Koregaon Park",
+        driveTime: "5 Mins",
+        category: "Lifestyle",
       },
       {
-        destination: "Kalyani Nagar & Central Pune",
+        destination: "EON IT Park, Kharadi",
+        driveTime: "7 Mins",
+        category: "Tech Hub",
+      },
+      {
+        destination: "Kalyani Nagar",
         driveTime: "8 Mins",
-        category: "Commercial Hub",
+        category: "Commercial",
       },
       {
-        destination: "EON Free Zone & WTC Kharadi",
-        driveTime: "7 - 9 Mins",
-        category: "IT & Tech Hub",
-      },
-      {
-        destination: "Magarpatta Cybercity & Hadapsar",
+        destination: "Magarpatta Cybercity",
         driveTime: "10 Mins",
-        category: "Business District",
+        category: "Business Hub",
       },
       {
-        destination: "Pune International Airport (PNQ)",
+        destination: "Pune International Airport",
         driveTime: "20 Mins",
         category: "Transit",
       },
       {
-        destination: "The Orbis School & Columbia Asia Hospital",
+        destination: "Columbia Asia Hospital / Schools",
         driveTime: "4 Mins",
-        category: "Healthcare & Education",
+        category: "Healthcare",
       },
     ],
   },
@@ -547,7 +577,7 @@ export const projectConfig: ProjectConfig = {
     displayPhone: "+91 7798504435",
     whatsappNumber: "917798504435",
     email: "rudrapropertypune@gmail.com",
-    siteOfficeHours: "Monday to Sunday: 10:00 AM – 7:30 PM",
+    siteOfficeHours: "Daily 10:00 AM – 7:30 PM",
     siteOfficeAddress:
       "Under-Construction Experience Centre & Site Office, Office No. 47, Prestige Chamber, Keshav Nagar–Mundhwa, Pune 411036",
   },

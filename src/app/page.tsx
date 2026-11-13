@@ -2,11 +2,14 @@ import React from 'react';
 import type { Metadata } from 'next';
 import HeroCinematic from '@/components/luxury/HeroCinematic';
 import ProjectOverview from '@/components/luxury/ProjectOverview';
-import CinematicVideosSection from '@/components/luxury/CinematicVideosSection';
+import UnderConstructionPortfolio from '@/components/luxury/UnderConstructionPortfolio';
+import TowerElevationVisualizer from '@/components/luxury/TowerElevationVisualizer';
 import ConstructionProgress from '@/components/luxury/ConstructionProgress';
+import CinematicVideosSection from '@/components/luxury/CinematicVideosSection';
 import CinematicGallery from '@/components/luxury/CinematicGallery';
 import LuxuryAmenities from '@/components/luxury/LuxuryAmenities';
 import FloorPlansSection from '@/components/luxury/FloorPlansSection';
+import MaterialStudio from '@/components/luxury/MaterialStudio';
 import LocationSection from '@/components/luxury/LocationSection';
 import { projectConfig } from '@/config/projectConfig';
 
@@ -29,22 +32,31 @@ export default function HomePage() {
       {/* 2. Essential Project Overview & Monograph Metrics */}
       <ProjectOverview />
 
-      {/* 3. 3D Architectural Animation & Construction Walkthrough Cinema */}
-      <CinematicVideosSection />
+      {/* 3. Exclusively Under-Construction Luxury Portfolio */}
+      <UnderConstructionPortfolio />
 
-      {/* 4. Live Construction Tracker & Milestone Engineering Progress */}
+      {/* 4. Interactive Vertical Slab & Floor Elevation Visualizer */}
+      <TowerElevationVisualizer />
+
+      {/* 4. Live Construction Tracker & MahaRERA Regulatory Audit Ledger */}
       <ConstructionProgress />
 
-      {/* 5. Cinematic Architectural Showcase Gallery (3D Renders) */}
+      {/* 5. 3D Architectural Animation & Construction Walkthrough Cinema */}
+      <CinematicVideosSection />
+
+      {/* 6. Cinematic Architectural Showcase Gallery (3D Renders) */}
       <CinematicGallery />
 
-      {/* 6. Curated Resort-Grade Amenities */}
+      {/* 7. Curated Resort-Grade Amenities */}
       <LuxuryAmenities />
 
-      {/* 7. Bespoke Under-Construction Schematics & Floor Plans */}
+      {/* 8. Bespoke Under-Construction Schematics & Floor Plans */}
       <FloorPlansSection />
 
-      {/* 8. Strategic Location & Connectivity */}
+      {/* 9. Pre-Casting Material Customization Studio */}
+      <MaterialStudio />
+
+      {/* 10. Strategic Location & Connectivity */}
       <LocationSection />
     </div>
   );

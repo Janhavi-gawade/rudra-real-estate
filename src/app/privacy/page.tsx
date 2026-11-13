@@ -1,42 +1,62 @@
 import React from 'react';
+import Link from 'next/link';
+import { ArrowLeft, ShieldCheck } from 'lucide-react';
+import { projectConfig } from '@/config/projectConfig';
 
 export const metadata = {
-  title: 'Privacy Policy | Rudra Property Pune',
+  title: `Privacy Policy | ${projectConfig.identity.projectName}`,
 };
 
 export default function PrivacyPage() {
+  const { identity, contact } = projectConfig;
+
   return (
-    <div className="bg-[#FAF8F5] min-h-screen py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 bg-white p-8 sm:p-12 rounded-3xl border border-slate-200 shadow-sm text-slate-700 text-sm leading-relaxed space-y-6">
-        <h1 className="text-3xl font-bold font-serif text-[#08183A]">Privacy Policy</h1>
-        <p className="text-xs text-slate-400">Effective Date: October 2026</p>
+    <div className="bg-[#040B18] text-[#FAF8F5] min-h-screen py-24 sm:py-32 selection:bg-[#C59B27] selection:text-[#040B18]">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <Link
+          href="/"
+          className="inline-flex items-center space-x-2 text-xs uppercase tracking-widest text-[#EAD07C] hover:underline mb-8"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Return to Residence</span>
+        </Link>
 
-        <p>
-          At <strong>Rudra Property – Real Estate Consultancy</strong> (Office No. 47, Prestige Chamber, Keshav Nagar–Mundhwa, Pune 411036), we respect and protect your privacy. This policy outlines how we handle customer inquiry data.
-        </p>
+        <div className="p-8 sm:p-12 rounded-3xl bg-[#061024] border border-white/10 shadow-2xl text-slate-300 text-xs sm:text-sm leading-relaxed space-y-6">
+          <div className="flex items-center space-x-2 text-[#EAD07C]">
+            <ShieldCheck className="w-5 h-5 text-[#C59B27]" />
+            <span className="text-xs uppercase tracking-widest font-semibold">Privacy Policy</span>
+          </div>
 
-        <h3 className="text-lg font-bold text-[#08183A] font-serif">1. Information We Collect</h3>
-        <p>
-          When you request information, schedule a property visit, or submit an enquiry on our platform, we collect your name, phone number, email address, and property preferences.
-        </p>
+          <h1 className="text-2xl sm:text-4xl font-light font-serif text-white tracking-tight">
+            Client Confidentiality & Privacy
+          </h1>
 
-        <h3 className="text-lg font-bold text-[#08183A] font-serif">2. How We Use Your Information</h3>
-        <ul className="list-disc pl-5 space-y-1">
-          <li>To contact you regarding the specific property or inquiry you submitted.</li>
-          <li>To schedule and coordinate site visits to verified projects.</li>
-          <li>To provide verified price lists, floor plans, and brochures.</li>
-          <li>We never sell or distribute your contact details to third-party marketing spammers.</li>
-        </ul>
+          <p className="text-xs text-slate-400">Effective: October 2026</p>
 
-        <h3 className="text-lg font-bold text-[#08183A] font-serif">3. Security</h3>
-        <p>
-          We employ industry-standard encryption and database safeguards to keep your contact requests confidential and secure.
-        </p>
+          <p>
+            At <strong>{identity.projectName}</strong>, we hold client privacy and confidentiality in the highest regard. This policy outlines our commitment to protecting your personal information when enquiring about our private residences.
+          </p>
 
-        <h3 className="text-lg font-bold text-[#08183A] font-serif">4. Contact Us</h3>
-        <p>
-          For questions regarding your privacy, contact us directly at <strong>rudrapropertypune@gmail.com</strong> or call <strong>+91 7798504435</strong>.
-        </p>
+          <h3 className="text-base font-serif text-white pt-2">1. Information Collection</h3>
+          <p>
+            When registering your interest or requesting a private site inspection, we collect necessary contact details including your name, telephone number, email address, and preferred residence configuration.
+          </p>
+
+          <h3 className="text-base font-serif text-white pt-2">2. Confidential Use</h3>
+          <p>
+            Your information is strictly utilized by our private residence advisory team to provide architectural dossiers, milestone progress updates, and to coordinate scheduled site tours. We never sell, rent, or distribute client information to third parties.
+          </p>
+
+          <h3 className="text-base font-serif text-white pt-2">3. MahaRERA Compliance</h3>
+          <p>
+            All communications adhere strictly to MahaRERA transparency guidelines. Project Registration Number: <strong>{identity.reraNumber}</strong>.
+          </p>
+
+          <h3 className="text-base font-serif text-white pt-2">4. Contact Desk</h3>
+          <p>
+            For privacy inquiries, please contact our desk at <strong>{contact.email}</strong> or call <strong>{contact.displayPhone}</strong>.
+          </p>
+        </div>
       </div>
     </div>
   );

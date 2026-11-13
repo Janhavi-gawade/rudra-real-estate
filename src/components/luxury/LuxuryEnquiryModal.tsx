@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { X, Sparkles, CheckCircle2, MessageCircle, ShieldCheck, ArrowRight } from 'lucide-react';
+import { X, Sparkles, CheckCircle2, MessageCircle, ShieldCheck, ArrowRight, Car } from 'lucide-react';
 import { projectConfig } from '@/config/projectConfig';
 
 interface LuxuryEnquiryModalProps {
@@ -18,6 +18,7 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
     phone: '',
     email: '',
     bhk: '3 BHK Sky Residence',
+    chauffeured: false,
     message: '',
   });
 
@@ -67,8 +68,7 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
           enquiryType: 'LUXURY_REGISTRATION',
           budget: formData.bhk,
           message:
-            formData.message.trim() ||
-            `Exclusive registration for ${formData.bhk} at ${identity.projectName}.`,
+            `${formData.message.trim() || `Registration for ${formData.bhk} at ${identity.projectName}.`}${formData.chauffeured ? ' (Requested Chauffeured Site Inspection)' : ''}`,
         }),
       });
 
@@ -125,7 +125,7 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
                 id="luxury-modal-heading"
                 className="text-base sm:text-xl font-serif text-white tracking-wide"
               >
-                DISCOVER YOUR DREAM HOME
+                VIP REGISTRATION
               </h2>
             </div>
           </div>
@@ -149,11 +149,11 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
               </div>
 
               <h3 className="text-2xl font-serif text-white font-light">
-                Interest Registered Successfully
+                Registration Confirmed
               </h3>
 
               <p className="text-xs sm:text-sm text-slate-300/80 max-w-sm mx-auto leading-relaxed font-light">
-                Thank you, <strong className="text-white font-medium">{formData.name}</strong>. A dedicated private residence advisor will connect with you shortly with priority allocation details.
+                Thank you, <strong className="text-white font-medium">{formData.name}</strong>. A dedicated residence advisor will connect with priority allocation details.
               </p>
 
               <div className="pt-4 flex flex-col gap-3">
@@ -176,14 +176,14 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
                   onClick={handleDismiss}
                   className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-medium text-xs tracking-wider uppercase transition-colors"
                 >
-                  Continue Exploring Website
+                  Continue Exploring
                 </button>
               </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed mb-4">
-                Register your interest in our exclusive residential project.
+                Register for priority floor plans, construction updates, and pre-launch pricing.
               </p>
 
               {errorMsg && (
@@ -277,6 +277,20 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
                   className="w-full px-4 py-2 text-xs sm:text-sm bg-[#040B18] border border-white/15 rounded-xl text-white placeholder-slate-500 focus:border-[#C59B27] focus:ring-1 focus:ring-[#C59B27] outline-none transition-all resize-none font-light"
                 />
               </div>
+
+              {/* Chauffeured Concierge Option */}
+              <label className="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-between cursor-pointer hover:bg-white/[0.05] transition-colors">
+                <div className="flex items-center space-x-2">
+                  <Car className="w-3.5 h-3.5 text-[#C59B27]" />
+                  <span className="text-[11px] text-slate-300">Request Chauffeured Site Inspection</span>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={formData.chauffeured}
+                  onChange={(e) => setFormData({ ...formData, chauffeured: e.target.checked })}
+                  className="rounded border-white/20 accent-[#C59B27] w-4 h-4 cursor-pointer"
+                />
+              </label>
 
               {/* CTA Button */}
               <div className="pt-2">

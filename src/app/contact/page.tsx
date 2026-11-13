@@ -1,25 +1,30 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import {
   MapPin,
   Phone,
   Mail,
   Clock,
   MessageCircle,
-  Sparkles,
   CheckCircle2,
-  ShieldCheck,
+  HardHat,
+  ArrowRight,
+  Car,
 } from 'lucide-react';
-import { buildWhatsAppUrl, buildCallUrl } from '@/lib/utils';
+import { projectConfig } from '@/config/projectConfig';
 
 export default function ContactPage() {
+  const { identity, contact } = projectConfig;
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
-    subject: 'Property Consultation',
+    bhk: '3 BHK Residence',
+    date: '',
+    transferOption: 'CHAUFFEURED', // 'CHAUFFEURED' | 'SELF_ARRIVAL'
+    pickupAddress: '',
     message: '',
   });
 
@@ -30,7 +35,7 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim()) {
-      setErrorMsg('Please provide Name and Phone number.');
+      setErrorMsg('Please enter your name and phone number.');
       return;
     }
 
@@ -42,228 +47,258 @@ export default function ContactPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          email: formData.email,
-          enquiryType: 'GENERAL',
-          budget: formData.subject,
-          message: formData.message || 'Direct enquiry from Contact Page',
+          name: formData.name.trim(),
+          phone: formData.phone.trim(),
+          email: formData.email.trim() || null,
+          enquiryType: 'SITE_VISIT',
+          budget: formData.bhk,
+          message: `Site Visit: ${formData.bhk}. Transfer: ${
+            formData.transferOption === 'CHAUFFEURED'
+              ? `Chauffeured Mercedes/EV Pick-up at: ${formData.pickupAddress || 'To be coordinated'}`
+              : 'Direct arrival at Experience Centre'
+          }. Date: ${formData.date || 'Flexible'}.`,
         }),
       });
 
-      if (!res.ok) throw new Error('Failed to send message');
+      if (!res.ok) throw new Error('Submission error');
       setSubmitted(true);
     } catch (err: any) {
-      setErrorMsg(err.message || 'Submission error');
+      setErrorMsg(err.message || 'Unable to schedule right now. Please connect directly via WhatsApp.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-[#FAF8F5] min-h-screen py-16 sm:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-[#B2881E] mb-3">
-            <Sparkles className="w-4 h-4 text-[#C59B27]" />
-            <span>CONNECT WITH US</span>
+    <div className="bg-[#040B18] text-[#FAF8F5] min-h-screen py-24 sm:py-32 selection:bg-[#C59B27] selection:text-[#040B18]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-8">
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#C59B27]/10 border border-[#C59B27]/30 text-[#EAD07C] text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase mb-3 sm:mb-4">
+            <HardHat className="w-3.5 h-3.5 text-[#C59B27]" />
+            <span>UNDER-CONSTRUCTION EXPERIENCE CENTRE</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold font-serif text-[#08183A]">
-            Contact Rudra Property
+          <h1 className="text-3xl sm:text-5xl font-light font-serif text-white tracking-tight mb-3">
+            Schedule a Private Site Tour
           </h1>
-          <p className="text-sm text-slate-600 mt-2">
-            Visit our office at Prestige Chamber Keshav Nagar–Mundhwa, or reach out for immediate assistance.
+          <p className="text-xs sm:text-base text-slate-300/80 font-light leading-relaxed">
+            Tour the active superstructure, inspect our show suite, and review pre-launch architectural plans.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Left Column: Office Details */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm space-y-6">
-              <div className="flex items-center space-x-3 pb-6 border-b border-slate-100">
-                <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-[#C59B27]/40 bg-white p-0.5 shrink-0">
-                  <Image
-                    src="/branding/rudra-logo.jpg"
-                    alt="Rudra Property"
-                    fill
-                    className="object-contain"
-                  />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Column: Office & Direct Contact Info */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="p-6 rounded-3xl bg-[#061024] border border-white/10 space-y-5">
+              <h2 className="text-xs uppercase tracking-widest text-[#EAD07C] font-semibold">
+                On-Site Experience Centre
+              </h2>
+
+              <div className="space-y-4 text-xs font-light text-slate-300">
+                <div className="flex items-start space-x-3">
+                  <MapPin className="w-4 h-4 text-[#C59B27] shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-white block font-normal">{identity.projectName}</span>
+                    <span>{contact.siteOfficeAddress}</span>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-[#08183A] font-serif">
-                    Rudra Property
-                  </h3>
-                  <p className="text-xs text-slate-400">Real Estate Consultancy</p>
+
+                <div className="flex items-center space-x-3">
+                  <Clock className="w-4 h-4 text-[#C59B27] shrink-0" />
+                  <span>{contact.siteOfficeHours}</span>
+                </div>
+
+                <div className="flex items-center space-x-3">
+                  <Phone className="w-4 h-4 text-[#C59B27] shrink-0" />
+                  <a href={`tel:+91${contact.phone}`} className="hover:text-white transition-colors">
+                    {contact.displayPhone}
+                  </a>
+                </div>
+
+                <div className="flex items-center space-x-3">
+                  <Mail className="w-4 h-4 text-[#C59B27] shrink-0" />
+                  <a href={`mailto:${contact.email}`} className="hover:text-white transition-colors">
+                    {contact.email}
+                  </a>
                 </div>
               </div>
 
-              <div className="space-y-4 text-xs text-slate-700">
-                <div className="flex items-start space-x-3">
-                  <MapPin className="w-5 h-5 text-[#C59B27] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-slate-900 block mb-0.5">Office Address</span>
-                    <span className="leading-relaxed">
-                      Office No. 47, Prestige Chamber,<br />
-                      Keshav Nagar–Mundhwa,<br />
-                      Pune 411036, Maharashtra
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <Phone className="w-5 h-5 text-[#C59B27] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-slate-900 block mb-0.5">Call Directly</span>
-                    <a href="tel:+917798504435" className="hover:text-[#B2881E] font-medium text-sm">
-                      +91 7798504435
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <Mail className="w-5 h-5 text-[#C59B27] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-slate-900 block mb-0.5">Email Inquiries</span>
-                    <a href="mailto:rudrapropertypune@gmail.com" className="hover:text-[#B2881E]">
-                      rudrapropertypune@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <Clock className="w-5 h-5 text-[#C59B27] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-slate-900 block mb-0.5">Consultation Hours</span>
-                    <span>Monday – Sunday: 9:30 AM to 8:00 PM</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-slate-100 flex flex-col gap-2">
+              <div className="pt-2">
                 <a
-                  href="https://wa.me/917798504435?text=Hello%20Rudra%20Property,%20I%20would%20like%20to%20consult%20regarding%20properties%20in%20Pune."
+                  href={`https://wa.me/${contact.whatsappNumber}?text=Hello,%20I%20would%20like%20to%20schedule%20a%20site%20visit%20for%20The%20Riviera%20Reserve.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center space-x-2 transition-colors"
+                  className="w-full py-2.5 rounded-full bg-emerald-600/90 hover:bg-emerald-600 text-white font-semibold text-xs tracking-wider uppercase flex items-center justify-center space-x-2 transition-colors shadow-lg"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>Chat on WhatsApp</span>
+                  <span>WhatsApp Residence Desk</span>
                 </a>
               </div>
             </div>
+
+            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 text-[11px] text-slate-400">
+              <span className="text-[#EAD07C] font-semibold block mb-1">MahaRERA Registered</span>
+              <span>Project registration number: {identity.reraNumber}</span>
+            </div>
           </div>
 
-          {/* Right Column: Contact Form */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-sm">
-              <h3 className="text-xl font-bold font-serif text-[#08183A] mb-2">
-                Send Us a Message
-              </h3>
-              <p className="text-xs text-slate-500 mb-6">
-                Tell us about your property requirement, budget, or preferred locality. We will respond promptly.
-              </p>
-
+          {/* Right Column: Appointment Form */}
+          <div className="lg:col-span-7">
+            <div className="p-6 sm:p-8 rounded-3xl bg-[#061024] border border-[#C59B27]/30 shadow-2xl">
               {submitted ? (
-                <div className="py-12 text-center space-y-3">
-                  <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
-                  <h4 className="text-xl font-bold text-[#08183A] font-serif">
-                    Message Sent Successfully!
-                  </h4>
-                  <p className="text-xs text-slate-600 max-w-md mx-auto">
-                    Thank you, {formData.name}. Our senior consultant has received your inquiry and will reach out to you shortly.
+                <div className="text-center py-10 space-y-4">
+                  <div className="w-14 h-14 bg-[#C59B27]/15 border border-[#C59B27]/40 text-[#EAD07C] rounded-full flex items-center justify-center mx-auto">
+                    <CheckCircle2 className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-serif text-white">Visit Scheduled</h3>
+                  <p className="text-xs sm:text-sm text-slate-300 font-light max-w-sm mx-auto leading-relaxed">
+                    Thank you, <strong className="text-white">{formData.name}</strong>. Our private client desk will confirm your {formData.transferOption === 'CHAUFFEURED' ? 'chauffeured site inspection' : 'site tour'} shortly.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="border-b border-white/10 pb-3 mb-4">
+                    <h3 className="text-lg font-serif text-white">Private Tour Request</h3>
+                    <p className="text-xs text-slate-400 font-light">
+                      Please enter your contact details to reserve your inspection slot.
+                    </p>
+                  </div>
+
                   {errorMsg && (
-                    <div className="p-3 text-xs bg-rose-50 text-rose-700 rounded-xl border border-rose-200">
+                    <div className="p-3 text-xs bg-rose-950/60 border border-rose-500/40 text-rose-200 rounded-xl">
                       {errorMsg}
                     </div>
                   )}
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-semibold tracking-wider uppercase text-slate-400 mb-1">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Vikramaditya Singhania"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-2.5 text-xs sm:text-sm bg-[#040B18] border border-white/15 rounded-xl text-white placeholder-slate-500 focus:border-[#C59B27] focus:ring-1 focus:ring-[#C59B27] outline-none"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Your Full Name <span className="text-rose-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Rajesh Patil"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#C59B27]"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Mobile Number <span className="text-rose-500">*</span>
+                      <label className="block text-[11px] font-semibold tracking-wider uppercase text-slate-400 mb-1">
+                        Mobile Number *
                       </label>
                       <input
                         type="tel"
                         required
-                        placeholder="+91 7798504435"
+                        placeholder="9876543210"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#C59B27]"
+                        className="w-full px-4 py-2.5 text-xs sm:text-sm bg-[#040B18] border border-white/15 rounded-xl text-white placeholder-slate-500 focus:border-[#C59B27] focus:ring-1 focus:ring-[#C59B27] outline-none"
                       />
                     </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      <label className="block text-[11px] font-semibold tracking-wider uppercase text-slate-400 mb-1">
                         Email Address
                       </label>
                       <input
                         type="email"
-                        placeholder="you@gmail.com"
+                        placeholder="name@domain.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#C59B27]"
+                        className="w-full px-4 py-2.5 text-xs sm:text-sm bg-[#040B18] border border-white/15 rounded-xl text-white placeholder-slate-500 focus:border-[#C59B27] focus:ring-1 focus:ring-[#C59B27] outline-none"
                       />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Topic of Inquiry
-                      </label>
-                      <select
-                        value={formData.subject}
-                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#C59B27] bg-white"
-                      >
-                        <option value="Buy Residential Flat in Keshav Nagar / Mundhwa">
-                          Buy Residential Flat in Keshav Nagar / Mundhwa
-                        </option>
-                        <option value="Buy Luxury Home in Kharadi / Koregaon Park">
-                          Buy Luxury Home in Kharadi / Koregaon Park
-                        </option>
-                        <option value="Commercial Space / Investment">Commercial Space / Investment</option>
-                        <option value="Rental Property Solution">Rental Property Solution</option>
-                        <option value="Sell or Rent Out My Property">Sell or Rent Out My Property</option>
-                      </select>
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Your Message or Specific Requirements
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-semibold tracking-wider uppercase text-slate-400 mb-1">
+                        Preferred Configuration
+                      </label>
+                      <select
+                        value={formData.bhk}
+                        onChange={(e) => setFormData({ ...formData, bhk: e.target.value })}
+                        className="w-full px-4 py-2.5 text-xs sm:text-sm bg-[#040B18] border border-white/15 rounded-xl text-white focus:border-[#C59B27] outline-none"
+                      >
+                        <option value="3 BHK Residence">3 BHK Sky Residence (1,380 sq.ft.)</option>
+                        <option value="4 BHK Sky Suite">4 BHK Presidential Suite (1,840 sq.ft.)</option>
+                        <option value="Sky Penthouse">Sky Penthouse Duplex (2,850 sq.ft.)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-semibold tracking-wider uppercase text-slate-400 mb-1">
+                        Preferred Visit Date
+                      </label>
+                      <input
+                        type="date"
+                        value={formData.date}
+                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                        className="w-full px-4 py-2.5 text-xs sm:text-sm bg-[#040B18] border border-white/15 rounded-xl text-white focus:border-[#C59B27] outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Arrival & Concierge Transfer Option */}
+                  <div className="pt-2 border-t border-white/10">
+                    <label className="block text-[11px] font-semibold tracking-wider uppercase text-slate-400 mb-2">
+                      Arrival Concierge
                     </label>
-                    <textarea
-                      rows={4}
-                      placeholder="Share BHK preference, preferred floor, budget, or questions..."
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#C59B27]"
-                    ></textarea>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-2.5">
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, transferOption: 'CHAUFFEURED' })}
+                        className={`p-3 rounded-xl text-left border transition-all text-xs flex items-center space-x-2.5 ${
+                          formData.transferOption === 'CHAUFFEURED'
+                            ? 'bg-white/10 border-[#C59B27] text-white'
+                            : 'bg-white/[0.02] border-white/10 text-slate-400'
+                        }`}
+                      >
+                        <Car className="w-4 h-4 text-[#C59B27] shrink-0" />
+                        <div>
+                          <div className="font-semibold text-white">Chauffeured Pick-up</div>
+                          <div className="text-[10px] text-slate-400">Complimentary Mercedes/EV</div>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, transferOption: 'SELF_ARRIVAL' })}
+                        className={`p-3 rounded-xl text-left border transition-all text-xs flex items-center space-x-2.5 ${
+                          formData.transferOption === 'SELF_ARRIVAL'
+                            ? 'bg-white/10 border-[#C59B27] text-white'
+                            : 'bg-white/[0.02] border-white/10 text-slate-400'
+                        }`}
+                      >
+                        <MapPin className="w-4 h-4 text-[#C59B27] shrink-0" />
+                        <div>
+                          <div className="font-semibold text-white">Direct Arrival</div>
+                          <div className="text-[10px] text-slate-400">Site Valet Parking</div>
+                        </div>
+                      </button>
+                    </div>
+
+                    {formData.transferOption === 'CHAUFFEURED' && (
+                      <input
+                        type="text"
+                        placeholder="Enter pick-up area (e.g. Koregaon Park, Kalyani Nagar, Airport)"
+                        value={formData.pickupAddress}
+                        onChange={(e) => setFormData({ ...formData, pickupAddress: e.target.value })}
+                        className="w-full px-4 py-2 text-xs bg-[#040B18] border border-white/15 rounded-xl text-white placeholder-slate-500 focus:border-[#C59B27] outline-none"
+                      />
+                    )}
                   </div>
 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3.5 rounded-xl font-bold text-xs sm:text-sm text-[#050E21] bg-gradient-to-r from-[#C59B27] via-[#E0B345] to-[#B2881E] hover:brightness-105 shadow-md shadow-[#C59B27]/30 transition-all"
+                    className="w-full mt-2 py-3 rounded-full font-semibold text-xs tracking-widest uppercase text-[#040B18] gold-shimmer-btn shadow-lg shadow-[#C59B27]/25 flex items-center justify-center space-x-2 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
                   >
-                    {loading ? 'Sending...' : 'Submit Inquiry'}
+                    <span>{loading ? 'Confirming...' : 'Confirm Site Tour'}</span>
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </form>
               )}
