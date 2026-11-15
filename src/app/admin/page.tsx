@@ -6,11 +6,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   Building2,
+  Users,
+  Calendar,
   Sparkles,
   Plus,
   Trash2,
   Edit,
   Search,
+  MessageCircle,
+  Phone,
   Eye,
   LogOut,
   Upload,
@@ -20,16 +24,19 @@ import {
   ShieldCheck,
   X,
 } from 'lucide-react';
-import { PropertyItem } from '@/types';
-import { formatPrice, formatArea } from '@/lib/utils';
+import { PropertyItem, EnquiryItem } from '@/types';
+import { formatPrice, formatArea, buildWhatsAppUrl, buildCallUrl, formatDate } from '@/lib/utils';
 
 export default function AdminDashboardPage() {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<'properties' | 'enquiries'>('properties');
   const [properties, setProperties] = useState<PropertyItem[]>([]);
+  const [enquiries, setEnquiries] = useState<EnquiryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Search in admin
+  // Search & Filter in admin
   const [propertySearch, setPropertySearch] = useState('');
+  const [enquiryStatusFilter, setEnquiryStatusFilter] = useState('ALL');
 
   // Modals
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -73,13 +80,28 @@ export default function AdminDashboardPage() {
         return;
       }
 
-      const pRes = await fetch('/api/properties');
-      if (pRes.ok) {
-        const pData = await pRes.json();
-        setProperties(pData.properties || []);
+      // Safely fetch properties and enquiries
+      try {
+        const propRes = await fetch('/api/properties');
+        if (propRes.ok) {
+          const propData = await propRes.json();
+          setProperties(propData.properties || []);
+        }
+      } catch (pErr) {
+        console.error('Failed to load properties:', pErr);
+      }
+
+      try {
+        const enqRes = await fetch('/api/enquiries');
+        if (enqRes.ok) {
+          const enqData = await enqRes.json();
+          setEnquiries(enqData.enquiries || []);
+        }
+      } catch (eErr) {
+        console.error('Failed to load enquiries:', eErr);
       }
     } catch (err) {
-      console.error('Failed to load admin data:', err);
+      console.error('Admin authentication error:', err);
     } finally {
       setLoading(false);
     }
@@ -188,15 +210,27 @@ export default function AdminDashboardPage() {
     }
   };
 
+  // Update lead status
+  const handleUpdateLeadStatus = async (id: string, status: string) => {
+    try {
+      await fetch(`/api/enquiries/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      setEnquiries(
+        enquiries.map((enq) => (enq.id === id ? { ...enq, status: status as any } : enq))
+      );
+    } catch (e) {
+      alert('Failed to update status');
+    }
+  };
+
   // Stats
   const totalProperties = properties.length;
   const availableProperties = properties.filter((p) => p.status === 'AVAILABLE').length;
-  const underConstruction = properties.filter(
-    (p) =>
-      p.possessionStatus?.toLowerCase().includes('under') ||
-      p.possessionStatus?.toLowerCase().includes('construction')
-  ).length;
-  const featuredProperties = properties.filter((p) => p.isFeatured).length;
+  const newLeads = enquiries.filter((e) => e.status === 'NEW').length;
+  const scheduledVisits = enquiries.filter((e) => e.enquiryType === 'SCHEDULE_VISIT').length;
 
   return (
     <div className="min-h-screen bg-[#050E21] text-slate-100 flex flex-col">
@@ -215,7 +249,7 @@ export default function AdminDashboardPage() {
             <h1 className="text-base sm:text-lg font-bold font-serif text-white tracking-wide">
               RUDRA PROPERTY <span className="text-[#C59B27]">ADMIN HQ</span>
             </h1>
-            <p className="text-[10px] text-slate-400">Brokerage Portfolio & Inventory Management</p>
+            <p className="text-[10px] text-slate-400">Brokerage Management & Lead CRM</p>
           </div>
         </div>
 
@@ -254,75 +288,94 @@ export default function AdminDashboardPage() {
               {totalProperties}
             </span>
             <span className="text-[11px] text-emerald-400 block mt-1">
-              Portfolio Listings
+              {availableProperties} Active Listings
             </span>
           </div>
 
           <div className="bg-[#08183A] p-5 rounded-2xl border border-[#0D224D] shadow-md">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">
-                Available Listings
+                New Leads
               </span>
-              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-            </div>
-            <span className="text-2xl sm:text-3xl font-bold font-serif text-emerald-400">
-              {availableProperties}
-            </span>
-            <span className="text-[11px] text-slate-400 block mt-1">Open For Allotment</span>
-          </div>
-
-          <div className="bg-[#08183A] p-5 rounded-2xl border border-[#0D224D] shadow-md">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">
-                Under Construction
-              </span>
-              <Clock className="w-5 h-5 text-amber-400" />
+              <Users className="w-5 h-5 text-amber-400" />
             </div>
             <span className="text-2xl sm:text-3xl font-bold font-serif text-amber-400">
-              {underConstruction}
+              {newLeads}
             </span>
-            <span className="text-[11px] text-slate-400 block mt-1">Ongoing Developments</span>
+            <span className="text-[11px] text-slate-400 block mt-1">Pending Follow-up</span>
           </div>
 
           <div className="bg-[#08183A] p-5 rounded-2xl border border-[#0D224D] shadow-md">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">
-                Featured Flagships
+                Scheduled Visits
               </span>
-              <Sparkles className="w-5 h-5 text-[#C59B27]" />
+              <Calendar className="w-5 h-5 text-emerald-400" />
+            </div>
+            <span className="text-2xl sm:text-3xl font-bold font-serif text-emerald-400">
+              {scheduledVisits}
+            </span>
+            <span className="text-[11px] text-slate-400 block mt-1">Site Pickups / Tours</span>
+          </div>
+
+          <div className="bg-[#08183A] p-5 rounded-2xl border border-[#0D224D] shadow-md">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">
+                Total Inquiries
+              </span>
+              <Sparkles className="w-5 h-5 text-blue-400" />
             </div>
             <span className="text-2xl sm:text-3xl font-bold font-serif text-white">
-              {featuredProperties}
+              {enquiries.length}
             </span>
-            <span className="text-[11px] text-slate-400 block mt-1">Prime Showcase</span>
+            <span className="text-[11px] text-slate-400 block mt-1">Direct Customer Contacts</span>
           </div>
         </div>
 
-        {/* Section Header & Add Property Button */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#0D224D] pb-4 mb-6">
-          <div>
-            <h2 className="text-lg font-bold font-serif text-white flex items-center space-x-2">
-              <span>Properties Portfolio Directory</span>
-              <span className="text-xs font-mono font-normal px-2.5 py-0.5 rounded-full bg-[#C59B27]/20 text-[#E0B345] border border-[#C59B27]/40">
-                {properties.length} Listings
-              </span>
-            </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Manage luxury under-construction & ready residential developments
-            </p>
+        {/* Tab Selection */}
+        <div className="flex items-center justify-between border-b border-[#0D224D] pb-4 mb-6">
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => setActiveTab('properties')}
+              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                activeTab === 'properties'
+                  ? 'bg-gradient-to-r from-[#C59B27] to-[#E0B345] text-[#050E21] shadow-lg'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              Properties Portfolio ({properties.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('enquiries')}
+              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+                activeTab === 'enquiries'
+                  ? 'bg-gradient-to-r from-[#C59B27] to-[#E0B345] text-[#050E21] shadow-lg'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <span>Customer Leads & CRM</span>
+              {newLeads > 0 && (
+                <span className="px-2 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-bold">
+                  {newLeads} new
+                </span>
+              )}
+            </button>
           </div>
 
-          <button
-            onClick={() => setAddModalOpen(true)}
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#C59B27] via-[#E0B345] to-[#B2881E] text-[#050E21] text-xs font-bold flex items-center space-x-1.5 shadow-md hover:brightness-110 transition-all cursor-pointer"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add New Property</span>
-          </button>
+          {activeTab === 'properties' && (
+            <button
+              onClick={() => setAddModalOpen(true)}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#C59B27] via-[#E0B345] to-[#B2881E] text-[#050E21] text-xs font-bold flex items-center space-x-1.5 shadow-md hover:brightness-110 transition-all cursor-pointer"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add New Property</span>
+            </button>
+          )}
         </div>
 
-        {/* PROPERTIES DIRECTORY */}
-        <div className="space-y-4">
+        {/* TAB 1: PROPERTIES MANAGEMENT */}
+        {activeTab === 'properties' && (
+          <div className="space-y-4">
             <div className="bg-[#08183A] rounded-2xl border border-[#0D224D] overflow-hidden">
               <div className="p-4 border-b border-[#0D224D] flex items-center justify-between">
                 <div className="relative w-72">
@@ -413,7 +466,7 @@ export default function AdminDashboardPage() {
                             </Link>
                             <button
                               onClick={() => handleDeleteProperty(p.id)}
-                              className="p-1.5 rounded bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800"
+                              className="p-1.5 rounded bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800 cursor-pointer"
                               title="Delete Listing"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -426,7 +479,120 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {/* TAB 2: CUSTOMER LEADS & CRM */}
+        {activeTab === 'enquiries' && (
+          <div className="bg-[#08183A] rounded-2xl border border-[#0D224D] overflow-hidden">
+            <div className="p-4 border-b border-[#0D224D] flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center space-x-2 text-xs">
+                <span className="text-slate-400">Filter status:</span>
+                {['ALL', 'NEW', 'CONTACTED', 'VISIT_SCHEDULED', 'CONVERTED', 'CLOSED'].map(
+                  (st) => (
+                    <button
+                      key={st}
+                      onClick={() => setEnquiryStatusFilter(st)}
+                      className={`px-3 py-1 rounded-lg text-xs font-semibold cursor-pointer ${
+                        enquiryStatusFilter === st
+                          ? 'bg-[#C59B27] text-[#050E21]'
+                          : 'bg-white/5 text-slate-300 hover:bg-white/10'
+                      }`}
+                    >
+                      {st}
+                    </button>
+                  )
+                )}
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-[#050E21]/60 text-slate-400 font-semibold uppercase tracking-wider border-b border-[#0D224D]">
+                    <th className="py-3 px-4">Client</th>
+                    <th className="py-3 px-4">Contact</th>
+                    <th className="py-3 px-4">Type & Requirement</th>
+                    <th className="py-3 px-4">Visit Date / Note</th>
+                    <th className="py-3 px-4">Status</th>
+                    <th className="py-3 px-4 text-right">Quick Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#0D224D] text-slate-300">
+                  {enquiries
+                    .filter((e) =>
+                      enquiryStatusFilter === 'ALL' ? true : e.status === enquiryStatusFilter
+                    )
+                    .map((enq) => (
+                      <tr key={enq.id} className="hover:bg-white/[0.02]">
+                        <td className="py-3 px-4">
+                          <span className="font-bold text-white block">{enq.name}</span>
+                          <span className="text-[10px] text-slate-400">
+                            {formatDate(enq.createdAt)}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 space-y-0.5">
+                          <div className="font-mono text-white">{enq.phone}</div>
+                          {enq.email && <div className="text-slate-400">{enq.email}</div>}
+                        </td>
+                        <td className="py-3 px-4 max-w-xs">
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-950 text-blue-300 border border-blue-800 mr-2">
+                            {enq.enquiryType}
+                          </span>
+                          <p className="text-slate-300 text-xs mt-1 line-clamp-2">
+                            {enq.budget || enq.message || 'General Enquiry'}
+                          </p>
+                        </td>
+                        <td className="py-3 px-4">
+                          {enq.preferredDate ? (
+                            <div className="font-semibold text-emerald-400">
+                              {enq.preferredDate} ({enq.preferredTime || 'Any slot'})
+                            </div>
+                          ) : (
+                            <span className="text-slate-500">—</span>
+                          )}
+                        </td>
+                        <td className="py-3 px-4">
+                          <select
+                            value={enq.status}
+                            onChange={(e) => handleUpdateLeadStatus(enq.id, e.target.value)}
+                            className="bg-[#050E21] border border-slate-700 text-xs text-white rounded-lg px-2 py-1 outline-none"
+                          >
+                            <option value="NEW">NEW</option>
+                            <option value="CONTACTED">CONTACTED</option>
+                            <option value="VISIT_SCHEDULED">VISIT_SCHEDULED</option>
+                            <option value="CONVERTED">CONVERTED</option>
+                            <option value="CLOSED">CLOSED</option>
+                          </select>
+                        </td>
+                        <td className="py-3 px-4 text-right space-x-2">
+                          <a
+                            href={buildWhatsAppUrl(
+                              enq.phone,
+                              `Hello ${enq.name}, greetings from Rudra Property Consultancy (Pune). Thank you for your inquiry regarding properties in Pune. How may I assist you today?`
+                            )}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white inline-block"
+                            title="Chat on WhatsApp"
+                          >
+                            <MessageCircle className="w-3.5 h-3.5" />
+                          </a>
+                          <a
+                            href={buildCallUrl(enq.phone)}
+                            className="p-1.5 rounded-lg bg-[#C59B27] hover:bg-[#D4AF37] text-[#050E21] inline-block"
+                            title="Call Phone"
+                          >
+                            <Phone className="w-3.5 h-3.5" />
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* ADD NEW PROPERTY MODAL */}
       {addModalOpen && (
@@ -491,7 +657,7 @@ export default function AdminDashboardPage() {
                   <input
                     type="number"
                     required
-                    placeholder="e.g. 8500000"
+                    placeholder="e.g. 11500000"
                     value={newProp.price}
                     onChange={(e) => setNewProp({ ...newProp, price: e.target.value })}
                     className="w-full px-3 py-2 bg-[#050E21] border border-slate-700 rounded-xl outline-none"
@@ -502,7 +668,7 @@ export default function AdminDashboardPage() {
                   <label className="block text-slate-300 font-semibold mb-1">Price Label</label>
                   <input
                     type="text"
-                    placeholder="e.g. ₹85 Lakhs"
+                    placeholder="e.g. ₹1.15 Cr"
                     value={newProp.priceDisplay}
                     onChange={(e) => setNewProp({ ...newProp, priceDisplay: e.target.value })}
                     className="w-full px-3 py-2 bg-[#050E21] border border-slate-700 rounded-xl outline-none"
@@ -510,12 +676,12 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Carpet Area (sq.ft.)</label>
+                  <label className="block text-slate-300 font-semibold mb-1">Carpet Area (sq.ft)</label>
                   <input
                     type="number"
-                    placeholder="e.g. 1150"
+                    placeholder="e.g. 1380"
                     value={newProp.carpetArea}
                     onChange={(e) => setNewProp({ ...newProp, carpetArea: e.target.value })}
                     className="w-full px-3 py-2 bg-[#050E21] border border-slate-700 rounded-xl outline-none"
@@ -523,7 +689,18 @@ export default function AdminDashboardPage() {
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Locality (Pune)</label>
+                  <label className="block text-slate-300 font-semibold mb-1">RERA Number</label>
+                  <input
+                    type="text"
+                    placeholder="P521000..."
+                    value={newProp.reraNumber}
+                    onChange={(e) => setNewProp({ ...newProp, reraNumber: e.target.value })}
+                    className="w-full px-3 py-2 bg-[#050E21] border border-slate-700 rounded-xl outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold mb-1">Locality</label>
                   <select
                     value={newProp.locality}
                     onChange={(e) => setNewProp({ ...newProp, locality: e.target.value })}
@@ -613,9 +790,9 @@ export default function AdminDashboardPage() {
                   id="featCheck"
                   checked={newProp.isFeatured}
                   onChange={(e) => setNewProp({ ...newProp, isFeatured: e.target.checked })}
-                  className="w-4 h-4 rounded text-[#C59B27] bg-[#050E21] border-slate-700"
+                  className="w-4 h-4 rounded text-[#C59B27] bg-[#050E21] border-slate-700 cursor-pointer"
                 />
-                <label htmlFor="featCheck" className="text-slate-300">
+                <label htmlFor="featCheck" className="text-slate-300 cursor-pointer">
                   Feature this listing on the homepage spotlight
                 </label>
               </div>
@@ -623,7 +800,7 @@ export default function AdminDashboardPage() {
               <button
                 type="submit"
                 disabled={savingProperty}
-                className="w-full py-3 rounded-xl font-bold text-xs text-[#050E21] bg-gradient-to-r from-[#C59B27] via-[#E0B345] to-[#B2881E] hover:brightness-110 shadow-lg"
+                className="w-full py-3 rounded-xl font-bold text-xs text-[#050E21] bg-gradient-to-r from-[#C59B27] via-[#E0B345] to-[#B2881E] hover:brightness-110 shadow-lg cursor-pointer transition-all"
               >
                 {savingProperty ? 'Publishing Property...' : 'Save & Publish to Live Website'}
               </button>

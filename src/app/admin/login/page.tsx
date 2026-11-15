@@ -55,10 +55,10 @@ export default function AdminLoginPage() {
             ADMIN PORTAL
           </span>
           <h1 className="text-2xl font-bold font-serif text-white mt-1">
-            Broker Management Portal
+            Broker CRM & Management
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Manage properties, uploads, prices & portfolio listings
+            Manage properties, uploads, prices & customer enquiries
           </p>
         </div>
 
