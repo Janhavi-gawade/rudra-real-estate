@@ -15,33 +15,127 @@ import {
 } from 'lucide-react';
 import { projectConfig } from '@/config/projectConfig';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { formatPrice } from '@/lib/utils';
 import ProjectExplorerModal from './ProjectExplorerModal';
 
 interface UnderConstructionPortfolioProps {
   onOpenEnquiry?: () => void;
 }
 
+function mapDbPropertyToProject(prop: any) {
+  const loc = (prop.locality || '').toLowerCase();
+  let corridor = 'Keshav Nagar - Mundhwa';
+  if (loc.includes('koregaon')) corridor = 'Koregaon Park Annexe';
+  else if (loc.includes('kharadi')) corridor = 'Kharadi IT Corridor';
+  else if (loc.includes('baner') || loc.includes('balewadi')) corridor = 'Baner - Balewadi';
+  else if (loc.includes('kalyani')) corridor = 'Kalyani Nagar';
+  else if (prop.locality) corridor = prop.locality;
+
+  const isReady = prop.possessionStatus?.toLowerCase().includes('ready');
+  const stage = prop.possessionStatus || 'Structural RCC Underway';
+  const progress = isReady ? 100 : Math.min(85, Math.max(25, 45));
+
+  const rawImages =
+    prop.images && prop.images.length > 0
+      ? prop.images
+          .map((img: any) => (typeof img === 'string' ? img : img.url))
+          .filter(Boolean)
+      : [];
+
+  const fallbackImages = [
+    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85',
+    'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1600&q=85',
+    'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=85',
+  ];
+
+  const galleryImages = rawImages.length > 0 ? rawImages : fallbackImages;
+  const imageUrl = galleryImages[0];
+
+  let priceStarting = prop.priceDisplay;
+  if (!priceStarting && prop.price) {
+    priceStarting = formatPrice(prop.price);
+  }
+
+  return {
+    id: prop.id || prop.propertyCode || `proj-${Math.random()}`,
+    name: prop.title,
+    corridor,
+    location: prop.address || `${prop.locality || 'Pune'}, Maharashtra`,
+    stage,
+    progress,
+    typology: `${prop.bhk ? `${prop.bhk} BHK ` : ''}${prop.propertyType || 'Luxury Residence'} (${prop.carpetArea || 1200} sq.ft)`,
+    possession: prop.possessionDate || prop.possessionStatus || 'Upcoming 2027',
+    priceStarting: priceStarting ? `${priceStarting}*` : 'Price On Request',
+    reraNumber: prop.reraNumber || 'P52100038912',
+    imageUrl,
+    youtubeId: prop.videoUrl || 'peTnFrq3oEA',
+    description:
+      prop.description ||
+      'Exclusive luxury residence in prime Pune corridor advised by Rudra Property Consultancy.',
+    galleryImages,
+    highlights: [
+      'Verified Direct Developer Allotment',
+      '0% Brokerage on Pre-Launch Bookings',
+      'MahaRERA Audited Title & Milestone Tracking',
+    ],
+    isFlagship: Boolean(prop.isFeatured),
+    isFromAdmin: true,
+  };
+}
+
 export default function UnderConstructionPortfolio({ onOpenEnquiry }: UnderConstructionPortfolioProps) {
   const { underConstructionPortfolio, contact } = projectConfig;
+  const [projectsList, setProjectsList] = useState(underConstructionPortfolio.projects);
   const [selectedCorridor, setSelectedCorridor] = useState<string>('All');
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
   const { ref: sectionRef, isVisible } = useScrollReveal({ threshold: 0.1 });
 
-  const corridors = [
-    'All',
-    'Keshav Nagar - Mundhwa',
-    'Koregaon Park Annexe',
-    'Kharadi IT Corridor',
-    'Baner - Balewadi',
-    'Kalyani Nagar',
-  ];
+  // Fetch live properties from database (including properties added via Admin Panel)
+  useEffect(() => {
+    let isMounted = true;
+    const fetchLiveProperties = async () => {
+      try {
+        const res = await fetch('/api/properties');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.properties && Array.isArray(data.properties) && data.properties.length > 0) {
+          const dbMapped = data.properties.map(mapDbPropertyToProject);
+          const staticTitles = new Set(dbMapped.map((p: any) => p.name.trim().toLowerCase()));
+          const remainingStatic = underConstructionPortfolio.projects.filter(
+            (p) => !staticTitles.has(p.name.trim().toLowerCase())
+          );
+          if (isMounted) {
+            // DB properties (admin additions) displayed first!
+            setProjectsList([...dbMapped, ...remainingStatic]);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch live properties:', err);
+      }
+    };
 
-  const allProjects = underConstructionPortfolio.projects;
+    fetchLiveProperties();
+    return () => {
+      isMounted = false;
+    };
+  }, [underConstructionPortfolio.projects]);
+
+  const corridors = Array.from(
+    new Set([
+      'All',
+      'Keshav Nagar - Mundhwa',
+      'Koregaon Park Annexe',
+      'Kharadi IT Corridor',
+      'Baner - Balewadi',
+      'Kalyani Nagar',
+      ...projectsList.map((p) => p.corridor).filter(Boolean),
+    ])
+  );
 
   const filteredProjects =
     selectedCorridor === 'All'
-      ? allProjects
-      : allProjects.filter(
+      ? projectsList
+      : projectsList.filter(
           (p) => p.corridor.toLowerCase() === selectedCorridor.toLowerCase()
         );
 
@@ -57,7 +151,7 @@ export default function UnderConstructionPortfolio({ onOpenEnquiry }: UnderConst
   }, []);
 
   const openExplorerForProject = (projId: string) => {
-    const globalIdx = allProjects.findIndex((p) => p.id === projId);
+    const globalIdx = projectsList.findIndex((p) => p.id === projId);
     if (globalIdx !== -1) {
       setSelectedProjectIndex(globalIdx);
     }
@@ -254,6 +348,7 @@ export default function UnderConstructionPortfolio({ onOpenEnquiry }: UnderConst
       {/* Interactive Single-Project Explorer Modal (Photos & 3D Walkthrough Video) */}
       <ProjectExplorerModal
         projectIndex={selectedProjectIndex}
+        projects={projectsList}
         onClose={() => setSelectedProjectIndex(null)}
         onOpenEnquiry={handleEnquiry}
       />

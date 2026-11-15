@@ -22,17 +22,22 @@ import { projectConfig } from '@/config/projectConfig';
 
 interface ProjectExplorerModalProps {
   projectIndex: number | null;
+  projects?: any[];
   onClose: () => void;
   onOpenEnquiry?: (projectName: string) => void;
 }
 
 export default function ProjectExplorerModal({
   projectIndex,
+  projects: customProjects,
   onClose,
   onOpenEnquiry,
 }: ProjectExplorerModalProps) {
   const { underConstructionPortfolio, contact } = projectConfig;
-  const projects = underConstructionPortfolio.projects;
+  const projects =
+    customProjects && customProjects.length > 0
+      ? customProjects
+      : underConstructionPortfolio.projects;
 
   const [activeMediaTab, setActiveMediaTab] = useState<'PHOTOS' | 'VIDEO'>('PHOTOS');
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
@@ -216,7 +221,7 @@ export default function ProjectExplorerModal({
             {/* Thumbnails Filmstrip (When in Photo Mode) */}
             {activeMediaTab === 'PHOTOS' && gallery.length > 1 && (
               <div className="flex items-center gap-2 overflow-x-auto pb-1">
-                {gallery.map((img, idx) => (
+                {gallery.map((img: string, idx: number) => (
                   <button
                     key={idx}
                     type="button"
@@ -303,7 +308,7 @@ export default function ProjectExplorerModal({
                     Key Development Advantages
                   </span>
                   <ul className="space-y-1 text-xs text-slate-300 font-light">
-                    {currentProject.highlights.map((h, i) => (
+                    {currentProject.highlights.map((h: string, i: number) => (
                       <li key={i} className="flex items-start space-x-2">
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#C59B27] shrink-0 mt-0.5" />
                         <span>{h}</span>
