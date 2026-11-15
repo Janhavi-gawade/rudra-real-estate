@@ -100,7 +100,7 @@ export default function CinematicVideosSection({ onOpenEnquiry }: CinematicVideo
           </div>
 
           {/* Clean Part Selector Tabs */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-2.5 sm:p-4 bg-[#061024] border-t border-white/10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 p-2.5 sm:p-4 bg-[#061024] border-t border-white/10">
             {animationVideos.videos.map((vid, idx) => (
               <button
                 key={vid.id}

@@ -79,13 +79,13 @@ export default function LocationSection({ onOpenEnquiry }: LocationSectionProps)
             <div className="lg:col-span-8 space-y-2">
               <div className="inline-flex items-center space-x-2 text-[10px] tracking-[0.25em] uppercase text-[#EAD07C] font-semibold">
                 <HardHat className="w-3.5 h-3.5 text-[#C59B27]" />
-                <span>ON-SITE EXPERIENCE CENTRE</span>
+                <span>RUDRA REAL ESTATE ADVISORY DESK</span>
               </div>
               <h3 className="text-lg sm:text-2xl font-serif text-white font-light">
                 {location.address}
               </h3>
               <p className="text-xs text-slate-400 font-light">
-                {contact.siteOfficeHours} • Client valet parking at site
+                {contact.siteOfficeHours} • Dedicated advisor consultations & site visits
               </p>
             </div>
 
@@ -95,7 +95,7 @@ export default function LocationSection({ onOpenEnquiry }: LocationSectionProps)
                 onClick={handleEnquiry}
                 className="w-full sm:w-auto px-7 py-3 rounded-full font-semibold text-xs tracking-widest uppercase text-[#040B18] gold-shimmer-btn shadow-lg shadow-[#C59B27]/20 transition-all flex items-center justify-center space-x-2 hover:scale-105"
               >
-                <span>Book Site Tour</span>
+                <span>Book Hardhat Inspection Tour</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 

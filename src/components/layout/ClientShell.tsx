@@ -65,7 +65,7 @@ export default function ClientShell({ children }: { children: React.ReactNode })
       <div className="fixed bottom-6 right-6 z-40 hidden sm:flex items-center space-x-3">
         {/* WhatsApp Consultation */}
         <a
-          href={`https://wa.me/${contact.whatsappNumber}?text=Hello,%20I%20am%20interested%20in%20The%20Riviera%20Reserve.`}
+          href={`https://wa.me/${contact.whatsappNumber}?text=Hello%20Rudra%20Real%20Estate,%20I%20am%20interested%20in%20under-construction%20luxury%20properties.`}
           target="_blank"
           rel="noopener noreferrer"
           title="Direct WhatsApp Consultation"
@@ -99,7 +99,7 @@ export default function ClientShell({ children }: { children: React.ReactNode })
         </a>
 
         <a
-          href={`https://wa.me/${contact.whatsappNumber}?text=Hello,%20I%20am%20interested%20in%20The%20Riviera%20Reserve.`}
+          href={`https://wa.me/${contact.whatsappNumber}?text=Hello%20Rudra%20Real%20Estate,%20I%20am%20interested%20in%20under-construction%20luxury%20properties.`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex-1 py-2 px-3 rounded-full bg-emerald-600 text-white text-xs font-semibold tracking-wider uppercase flex items-center justify-center space-x-1.5"

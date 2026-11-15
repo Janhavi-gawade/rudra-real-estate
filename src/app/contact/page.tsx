@@ -125,7 +125,7 @@ export default function ContactPage() {
 
               <div className="pt-2">
                 <a
-                  href={`https://wa.me/${contact.whatsappNumber}?text=Hello,%20I%20would%20like%20to%20schedule%20a%20site%20visit%20for%20The%20Riviera%20Reserve.`}
+                  href={`https://wa.me/${contact.whatsappNumber}?text=Hello%20Rudra%20Real%20Estate,%20I%20would%20like%20to%20schedule%20a%20site%20visit%20for%20under-construction%20properties.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-2.5 rounded-full bg-emerald-600/90 hover:bg-emerald-600 text-white font-semibold text-xs tracking-wider uppercase flex items-center justify-center space-x-2 transition-colors shadow-lg"

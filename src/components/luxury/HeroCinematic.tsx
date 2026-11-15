@@ -1,8 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import { Sparkles, HardHat } from 'lucide-react';
+import {
+  Sparkles,
+  HardHat,
+  ShieldCheck,
+  Building,
+  Layers,
+  Plane,
+  ArrowRight,
+  ChevronDown,
+  Volume2,
+  VolumeX,
+} from 'lucide-react';
 import { projectConfig } from '@/config/projectConfig';
 
 interface HeroCinematicProps {
@@ -10,10 +21,11 @@ interface HeroCinematicProps {
 }
 
 export default function HeroCinematic({ onOpenEnquiry }: HeroCinematicProps) {
-  const { identity, hero } = projectConfig;
+  const { identity, hero, brokerStats } = projectConfig;
+  const [isMuted, setIsMuted] = useState(true);
 
-  const scrollToExplore = () => {
-    const target = document.getElementById('project-overview');
+  const scrollToSection = (id: string) => {
+    const target = document.getElementById(id);
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });
     }
@@ -29,9 +41,9 @@ export default function HeroCinematic({ onOpenEnquiry }: HeroCinematicProps) {
 
   return (
     <section className="relative w-full min-h-[100dvh] flex items-center justify-center overflow-hidden bg-[#040B18] py-20 sm:py-0">
-      {/* 1. Cinematic Background Layer: Video with Poster Fallback */}
+      {/* 1. Cinematic Background Layer: 4K Drone/Architecture Video with Poster Fallback */}
       <div className="absolute inset-0 z-0 overflow-hidden select-none pointer-events-none">
-        {/* High-Resolution Poster Always Present */}
+        {/* High-Resolution Architectural Poster (Always Present as Base Layer) */}
         <div className="absolute inset-0 z-0">
           <Image
             src={hero.fallbackPoster}
@@ -39,7 +51,7 @@ export default function HeroCinematic({ onOpenEnquiry }: HeroCinematicProps) {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center animate-ken-burns"
+            className="object-cover object-center animate-ken-burns scale-105"
           />
         </div>
 
@@ -47,51 +59,83 @@ export default function HeroCinematic({ onOpenEnquiry }: HeroCinematicProps) {
         {hero.youtubeId && (
           <div className="absolute inset-0 z-1 pointer-events-none overflow-hidden">
             <iframe
-              src={`https://www.youtube-nocookie.com/embed/${hero.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${hero.youtubeId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&playsinline=1`}
+              key={`${hero.youtubeId}-${isMuted}`}
+              src={`https://www.youtube-nocookie.com/embed/${hero.youtubeId}?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=${hero.youtubeId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&playsinline=1`}
               title="Architectural Background Loop"
               allow="autoplay; encrypted-media"
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240vw] sm:w-[180vw] h-[240vh] sm:h-[180vh] min-w-full min-h-full border-0 pointer-events-none opacity-85 scale-105"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240vw] sm:w-[180vw] h-[240vh] sm:h-[180vh] min-w-full min-h-full border-0 pointer-events-none opacity-85 scale-110"
             />
           </div>
         )}
 
-        {/* Cinematic Vignette & Ambient Lighting */}
-        <div className="absolute inset-0 z-2 bg-gradient-to-t from-[#040B18] via-[#040B18]/50 to-[#040B18]/70" />
-        <div className="absolute inset-0 z-2 bg-gradient-to-r from-[#040B18]/70 via-transparent to-[#040B18]/70" />
-        <div className="absolute inset-0 z-2 bg-[radial-gradient(circle_at_center,_rgba(197,155,39,0.12)_0%,_transparent_65%)] pointer-events-none" />
+        {/* Deep Cyber-Luxury Gradients & Ambient Lighting Over Video */}
+        <div className="absolute inset-0 z-2 bg-gradient-to-t from-[#040B18] via-[#040B18]/60 to-[#040B18]/75" />
+        <div className="absolute inset-0 z-2 bg-gradient-to-r from-[#040B18]/90 via-[#040B18]/45 to-[#040B18]/90" />
+        <div className="absolute inset-0 z-2 bg-[radial-gradient(circle_at_center,_rgba(197,155,39,0.16)_0%,_transparent_60%)] pointer-events-none" />
       </div>
 
-      {/* 2. Minimalist Hero Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-8 text-center flex flex-col items-center justify-center pt-16 sm:pt-20">
-        {/* Architectural Status Pill */}
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white/5 backdrop-blur-md border border-[#C59B27]/40 text-[#EAD07C] text-[10px] sm:text-xs font-semibold tracking-widest uppercase mb-4 sm:mb-6 shadow-2xl animate-cinematic-reveal hero-stagger-1">
-          <HardHat className="w-3.5 h-3.5 text-[#C59B27] animate-pulse" />
-          <span>{identity.statusBadge}</span>
+      {/* 2. Focused Cyber-Luxury Hero Content */}
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-8 text-center flex flex-col items-center justify-center pt-24 sm:pt-28 pb-12">
+        {/* Live Telemetry Pill */}
+        <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-[#00F2FE]/40 text-[#4FACFE] text-[10px] sm:text-xs font-mono font-semibold tracking-wider uppercase mb-5 sm:mb-6 shadow-2xl animate-cinematic-reveal hero-stagger-1">
+          <span className="w-2 h-2 rounded-full bg-[#00F2FE] animate-ping" />
+          <span>LIVE TELEMETRY: ACTIVE 14TH SLAB CASTING • 100% MAHARERA AUDITED</span>
         </div>
 
-        {/* Project Monogram */}
-        <p className="text-[11px] sm:text-xs uppercase tracking-[0.35em] text-slate-300 font-medium mb-3 animate-cinematic-reveal hero-stagger-2">
-          {identity.projectName}
+        {/* Brand Monogram */}
+        <p className="text-xs sm:text-sm uppercase tracking-[0.45em] text-[#C59B27] font-semibold mb-3 animate-cinematic-reveal hero-stagger-2">
+          {identity.projectName} • LUXURY PROPERTY BROKERAGE
         </p>
 
-        {/* Bold, Clean Headline */}
-        <h1 className="text-3xl sm:text-6xl md:text-7xl font-light font-serif text-white tracking-tight leading-[1.12] mb-4 sm:mb-5 max-w-3xl animate-cinematic-reveal hero-stagger-3">
-          {hero.headline}
+        {/* High-Impact Editorial Headline */}
+        <h1 className="text-3xl sm:text-6xl md:text-7xl font-light font-serif text-white tracking-tight leading-[1.1] mb-4 sm:mb-6 max-w-4xl animate-cinematic-reveal hero-stagger-3">
+          The Skyline Was Designed First.
         </h1>
 
-        {/* Crisp Single-Sentence Subheadline */}
-        <p className="text-xs sm:text-base md:text-lg text-slate-300/90 font-light max-w-xl mx-auto leading-relaxed mb-8 sm:mb-10 tracking-wide animate-cinematic-reveal hero-stagger-4">
-          {hero.subheadline}
+        {/* Subheadline */}
+        <p className="text-xs sm:text-base md:text-lg text-slate-300 font-light max-w-2xl mx-auto leading-relaxed mb-6 sm:mb-8 tracking-wide animate-cinematic-reveal hero-stagger-4">
+          Curated under-construction luxury residences, riverfront sky mansions, and high-growth pre-launch developments across Pune with zero client brokerage.
         </p>
 
-        {/* Clean, Decisive CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto animate-cinematic-reveal hero-stagger-5 max-w-xs sm:max-w-none mb-8 sm:mb-10">
+        {/* Quick Interactive Mode Switcher Pills */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-10 animate-cinematic-reveal hero-stagger-4">
           <button
             type="button"
-            onClick={scrollToExplore}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-full font-semibold text-xs tracking-widest uppercase text-[#040B18] gold-shimmer-btn shadow-2xl shadow-[#C59B27]/30 transition-all hover:scale-105 active:scale-95"
+            onClick={() => scrollToSection('tower-elevation')}
+            className="px-4 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-[#00F2FE]/50 text-[#00F2FE] text-[11px] font-mono tracking-wider transition-all flex items-center space-x-1.5 hover:scale-105 shadow-md"
           >
-            {hero.primaryCtaText}
+            <Building className="w-3.5 h-3.5 text-[#00F2FE]" />
+            <span>3D Tower Telemetry HUD</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => scrollToSection('tower-elevation')}
+            className="px-4 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-[#4FACFE]/50 text-[#4FACFE] text-[11px] font-mono tracking-wider transition-all flex items-center space-x-1.5 hover:scale-105 shadow-md"
+          >
+            <Plane className="w-3.5 h-3.5 text-[#4FACFE]" />
+            <span>Drone Balcony Altitude Simulator</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => scrollToSection('under-construction-portfolio')}
+            className="px-4 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-[#C59B27]/50 text-[#EAD07C] text-[11px] font-mono tracking-wider transition-all flex items-center space-x-1.5 hover:scale-105 shadow-md"
+          >
+            <Building className="w-3.5 h-3.5 text-[#C59B27]" />
+            <span>Explore Projects & Videos</span>
+          </button>
+        </div>
+
+        {/* Primary CTAs */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto animate-cinematic-reveal hero-stagger-5 max-w-xs sm:max-w-none mb-10 sm:mb-12">
+          <button
+            type="button"
+            onClick={() => scrollToSection('tower-elevation')}
+            className="w-full sm:w-auto px-8 py-3.5 rounded-full font-semibold text-xs tracking-widest uppercase text-[#040B18] gold-shimmer-btn shadow-2xl shadow-[#C59B27]/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center space-x-2"
+          >
+            <span>Launch 3D Skyscraper HUD</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
 
           <button
@@ -100,53 +144,64 @@ export default function HeroCinematic({ onOpenEnquiry }: HeroCinematicProps) {
             className="w-full sm:w-auto px-8 py-3.5 rounded-full font-semibold text-xs tracking-widest uppercase text-[#EAD07C] bg-white/5 hover:bg-white/10 backdrop-blur-md border border-[#C59B27]/40 transition-all hover:scale-105 active:scale-95 flex items-center justify-center space-x-2"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#C59B27]" />
-            <span>{hero.secondaryCtaText}</span>
+            <span>Book VIP Hardhat Tour</span>
           </button>
         </div>
 
-        {/* Live Under-Construction Proof Bar */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-8 pt-4 border-t border-white/10 w-full max-w-2xl text-center">
-          <div>
-            <span className="text-[9px] uppercase tracking-widest text-slate-400 block mb-0.5">
-              Current Stage
-            </span>
-            <span className="text-[11px] sm:text-xs font-semibold text-[#EAD07C] flex items-center justify-center space-x-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-              <span>14th Floor Slab</span>
-            </span>
-          </div>
-
-          <div>
-            <span className="text-[9px] uppercase tracking-widest text-slate-400 block mb-0.5">
-              MahaRERA Possession
-            </span>
-            <span className="text-[11px] sm:text-xs font-semibold text-white">
-              December 2027
-            </span>
-          </div>
-
-          <div>
-            <span className="text-[9px] uppercase tracking-widest text-slate-400 block mb-0.5">
-              Payment Terms
-            </span>
-            <span className="text-[11px] sm:text-xs font-semibold text-white">
-              Construction Linked
-            </span>
-          </div>
+        {/* 4 Proof Metrics */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 pt-6 border-t border-white/10 w-full max-w-4xl">
+          {brokerStats.map((stat, idx) => (
+            <div
+              key={idx}
+              className="p-3 sm:p-4 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm text-center"
+            >
+              <span className="text-[10px] uppercase tracking-widest text-slate-400 block mb-1 font-mono">
+                {stat.label}
+              </span>
+              <span className="text-base sm:text-xl font-serif font-semibold text-[#EAD07C] block mb-0.5">
+                {stat.value}
+              </span>
+              <span className="text-[10px] text-slate-400 font-light block">
+                {stat.subtext}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* 3. Subtle Animated Scroll Indicator */}
+      {/* 3. Audio Ambience Control Pill (Bottom-Right) */}
+      {hero.youtubeId && (
+        <div className="absolute bottom-6 right-6 z-20 hidden sm:flex items-center space-x-2">
+          <button
+            type="button"
+            onClick={() => setIsMuted(!isMuted)}
+            className="px-3.5 py-1.5 rounded-full bg-black/75 hover:bg-black/90 backdrop-blur-md border border-white/20 text-[10px] font-mono text-slate-300 hover:text-white transition-all flex items-center space-x-1.5 shadow-xl"
+            aria-label={isMuted ? 'Enable video sound' : 'Mute video sound'}
+          >
+            {isMuted ? (
+              <>
+                <VolumeX className="w-3.5 h-3.5 text-slate-400" />
+                <span>UNMUTE REEL</span>
+              </>
+            ) : (
+              <>
+                <Volume2 className="w-3.5 h-3.5 text-[#00F2FE]" />
+                <span className="text-[#00F2FE]">AUDIO ACTIVE</span>
+              </>
+            )}
+          </button>
+        </div>
+      )}
+
+      {/* 4. Subtle Animated Scroll Indicator */}
       <button
         type="button"
-        onClick={scrollToExplore}
-        className="absolute bottom-6 z-10 flex flex-col items-center space-y-2 text-[10px] tracking-[0.25em] uppercase text-slate-400 hover:text-[#EAD07C] transition-colors focus:outline-none"
-        aria-label="Scroll to explore the project"
+        onClick={() => scrollToSection('tower-elevation')}
+        className="absolute bottom-3 sm:bottom-5 z-10 flex flex-col items-center space-y-1.5 text-[10px] tracking-[0.25em] uppercase text-slate-400 hover:text-[#EAD07C] transition-colors focus:outline-none"
+        aria-label="Scroll to 3D elevation"
       >
-        <span className="font-light">EXPLORE</span>
-        <div className="w-4 h-7 rounded-full border border-slate-500/60 flex items-start justify-center p-1">
-          <div className="w-1 h-2 rounded-full bg-[#C59B27] animate-scroll-drop" />
-        </div>
+        <span className="font-light">EXPLORE ELEVATION</span>
+        <ChevronDown className="w-4 h-4 text-[#C59B27] animate-bounce" />
       </button>
     </section>
   );

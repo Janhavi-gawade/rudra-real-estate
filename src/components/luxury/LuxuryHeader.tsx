@@ -36,12 +36,11 @@ export default function LuxuryHeader({ onOpenEnquiry }: LuxuryHeaderProps) {
 
   const navLinks = [
     { label: 'Overview', href: '#project-overview' },
-    { label: 'Portfolio', href: '#under-construction-portfolio' },
-    { label: 'Elevation', href: '#tower-elevation' },
-    { label: 'Status', href: '#construction-progress' },
-    { label: 'Cinema', href: '#cinematic-videos' },
-    { label: 'Plans', href: '#project-plans' },
-    { label: 'Materials', href: '#customization-studio' },
+    { label: '3D Tower HUD', href: '#tower-elevation' },
+    { label: 'Projects', href: '#under-construction-portfolio' },
+    { label: 'Why Us', href: '#under-construction-advantages' },
+    { label: '3D Cinema', href: '#cinematic-videos' },
+    { label: 'Corridors', href: '#project-location' },
   ];
 
   return (
@@ -74,7 +73,7 @@ export default function LuxuryHeader({ onOpenEnquiry }: LuxuryHeaderProps) {
               </span>
               <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-amber-300 font-semibold flex items-center space-x-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                <span>Under Construction Only</span>
+                <span>Luxury Real Estate Brokerage</span>
               </span>
             </div>
           </Link>

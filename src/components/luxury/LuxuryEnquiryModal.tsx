@@ -17,10 +17,20 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
     name: '',
     phone: '',
     email: '',
-    bhk: '3 BHK Sky Residence',
+    bhk: 'The Riverfront Mansions (Keshav Nagar)',
     chauffeured: false,
     message: '',
   });
+
+  React.useEffect(() => {
+    const handleCustomOpen = (e: any) => {
+      if (e?.detail?.projectName) {
+        setFormData((prev) => ({ ...prev, bhk: e.detail.projectName }));
+      }
+    };
+    window.addEventListener('open-enquiry-modal', handleCustomOpen);
+    return () => window.removeEventListener('open-enquiry-modal', handleCustomOpen);
+  }, []);
 
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -242,24 +252,36 @@ export default function LuxuryEnquiryModal({ isOpen, onClose }: LuxuryEnquiryMod
                 </div>
               </div>
 
-              {/* Preferred BHK Configuration */}
+              {/* Preferred Project or Typology */}
               <div>
                 <label className="block text-[11px] font-semibold tracking-wider uppercase text-slate-400 mb-1.5">
-                  Preferred BHK Configuration
+                  Interested Project / Typology
                 </label>
                 <select
                   value={formData.bhk}
                   onChange={(e) => setFormData({ ...formData, bhk: e.target.value })}
                   className="w-full px-4 py-2.5 text-xs sm:text-sm bg-[#040B18] border border-white/15 rounded-xl text-white focus:border-[#C59B27] focus:ring-1 focus:ring-[#C59B27] outline-none transition-all font-light"
                 >
-                  <option value="3 BHK Sky Residence" className="bg-[#040B18] text-white">
-                    3 BHK Sky Residence (1,380 sq. ft.)
+                  <option value="The Riverfront Mansions (Keshav Nagar)" className="bg-[#040B18] text-white">
+                    The Riverfront Mansions (Keshav Nagar – 3 & 4 BHK)
                   </option>
-                  <option value="4 BHK Presidential Suite" className="bg-[#040B18] text-white">
-                    4 BHK Presidential Suite (1,840 sq. ft.)
+                  <option value="Koregaon Park Sky Suites" className="bg-[#040B18] text-white">
+                    Koregaon Park Sky Suites (Koregaon Park Annexe – 4 BHK)
                   </option>
-                  <option value="Sky Penthouse Duplex" className="bg-[#040B18] text-white">
-                    Sky Penthouse Duplex (2,850 sq. ft.)
+                  <option value="The Riverside Promenade (Mundhwa)" className="bg-[#040B18] text-white">
+                    The Riverside Promenade (Mundhwa – 3 BHK)
+                  </option>
+                  <option value="Elysium Towers Kharadi" className="bg-[#040B18] text-white">
+                    Elysium Towers (Kharadi IT Corridor – 2.5 & 3.5 BHK)
+                  </option>
+                  <option value="The Crestline Baner" className="bg-[#040B18] text-white">
+                    The Crestline (Baner - Balewadi – 3 & 4 BHK)
+                  </option>
+                  <option value="Kalyani Crest Residences" className="bg-[#040B18] text-white">
+                    Kalyani Crest Residences (Kalyani Nagar – 4.5 BHK)
+                  </option>
+                  <option value="General Under-Construction Consultation" className="bg-[#040B18] text-white">
+                    General Consultation (All Under-Construction Projects)
                   </option>
                 </select>
               </div>

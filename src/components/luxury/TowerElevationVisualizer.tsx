@@ -2,85 +2,162 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Layers, CheckCircle2, Sparkles, HardHat, ArrowRight, ShieldCheck } from 'lucide-react';
+import {
+  Layers,
+  Sparkles,
+  HardHat,
+  ArrowRight,
+  Compass,
+  Eye,
+  Maximize2,
+  Building,
+  ShieldCheck,
+  CheckCircle2,
+  ChevronRight,
+  Plane,
+} from 'lucide-react';
+import { projectConfig } from '@/config/projectConfig';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
-interface TowerTier {
-  id: string;
-  name: string;
-  floors: string;
-  status: 'COMPLETED' | 'IN_PROGRESS' | 'PRE_LAUNCH';
-  statusLabel: string;
+interface FloorLevel {
+  level: number;
+  levelLabel: string;
+  altitudeFt: number;
+  tierName: string;
+  tierCategory: 'PENTHOUSE' | 'HORIZON' | 'RIVERSIDE' | 'PODIUM';
   typology: string;
+  carpetArea: string;
+  superArea: string;
   ceilingHeight: string;
+  orientation: string;
+  stage: string;
+  progressPercent: number;
+  priceStarting: string;
   highlights: string[];
-  imageUrl: string;
+  droneViewUrl: string;
+  exteriorCropUrl: string;
 }
 
-const towerTiers: TowerTier[] = [
+const floorLevels: FloorLevel[] = [
   {
-    id: 'tier-penthouse',
-    name: 'The Crown Penthouses',
-    floors: 'Floors 25 – 28',
-    status: 'PRE_LAUNCH',
-    statusLabel: 'Pre-Launch Allocation',
-    typology: 'Sky Penthouse Duplexes',
-    ceilingHeight: '22-Ft Double Height',
+    level: 28,
+    levelLabel: 'Level 28 (Crown Sky Penthouse)',
+    altitudeFt: 290,
+    tierName: 'The Crown Sky Penthouses',
+    tierCategory: 'PENTHOUSE',
+    typology: '5 BHK Crown Duplex Penthouse',
+    carpetArea: '2,850 Sq. Ft.',
+    superArea: '3,650 Sq. Ft.',
+    ceilingHeight: '22-Ft Double Height Glass Atrium',
+    orientation: '360° Panoramic Riverfront & Western Ghats Sunset',
+    stage: 'Pre-Casting Structural Allocation',
+    progressPercent: 100,
+    priceStarting: '₹3.45 Cr*',
     highlights: [
-      'Private rooftop plunge pool & sunset deck',
-      'Double-height glass atrium with river vistas',
-      'Exclusive private elevator foyer access',
+      'Cantilevered private plunge pool & rooftop stargazing deck',
+      'Direct dual biometric elevator opening into private vestibule',
+      '4 dedicated covered podium parking bays with EV hyperchargers',
     ],
-    imageUrl:
+    droneViewUrl:
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=85',
+    exteriorCropUrl:
       'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
   },
   {
-    id: 'tier-highrise',
-    name: 'Sky Mansions Collection',
-    floors: 'Floors 15 – 24',
-    status: 'PRE_LAUNCH',
-    statusLabel: 'Pre-Casting Customization',
-    typology: '3 & 4 BHK Sky Mansions',
-    ceilingHeight: '11.5-Ft Clear Slab Height',
+    level: 22,
+    levelLabel: 'Level 22 (High-Altitude Cloudline)',
+    altitudeFt: 225,
+    tierName: 'Horizon Sky Mansions',
+    tierCategory: 'HORIZON',
+    typology: '4 BHK Grand River Mansion',
+    carpetArea: '2,140 Sq. Ft.',
+    superArea: '2,750 Sq. Ft.',
+    ceilingHeight: '11.8-Ft Clear Slab Clearance',
+    orientation: '180° Unblocked River Curve & Koregaon Park Skyline',
+    stage: 'Superstructure Column Reinforcement',
+    progressPercent: 70,
+    priceStarting: '₹2.10 Cr*',
     highlights: [
-      'Cantilevered 10-ft deep riverfront sundecks',
-      'Opportunity for bespoke internal layout changes',
-      'Acoustic double-glazed structural facade',
+      '10-Ft deep cantilevered river view sundeck with glass balustrade',
+      'Master salon with Italian Statuario marble & acoustic acoustic glazing',
+      '3 dedicated basement car bays with valet assistance',
     ],
-    imageUrl:
+    droneViewUrl:
+      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1800&q=85',
+    exteriorCropUrl:
       'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80',
   },
   {
-    id: 'tier-midrise',
-    name: 'Active Superstructure',
-    floors: 'Floors 5 – 14',
-    status: 'IN_PROGRESS',
-    statusLabel: 'Active 14th Slab Pouring',
-    typology: '3 BHK Imperial Residences',
-    ceilingHeight: '11-Ft Floor to Ceiling',
+    level: 14,
+    levelLabel: 'Level 14 (Active 14th Slab Pouring)',
+    altitudeFt: 145,
+    tierName: 'Active Superstructure Tier',
+    tierCategory: 'HORIZON',
+    typology: '3.5 & 4 BHK River Suites',
+    carpetArea: '1,840 Sq. Ft.',
+    superArea: '2,350 Sq. Ft.',
+    ceilingHeight: '11.5-Ft Clear Ceiling',
+    orientation: 'North-West Facing Sunset & Riverfront Corridor',
+    stage: 'Active 14th Slab Monolithic RCC Pouring (Live)',
+    progressPercent: 48,
+    priceStarting: '₹1.85 Cr*',
     highlights: [
-      'Currently under active monolithic RCC construction',
-      'Seismic-resistant high-grade M60 concrete',
-      'Direct views across riverside promenade',
+      'Currently under active crane & concrete pump operation',
+      'Construction-linked tranches (CLP) aligned to certified slab completion',
+      'Opportunity for bespoke internal non-structural partition adjustments',
     ],
-    imageUrl:
+    droneViewUrl:
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1800&q=85',
+    exteriorCropUrl:
       'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
   },
   {
-    id: 'tier-podium',
-    name: 'Podium & Amenity Precinct',
-    floors: 'Floors 1 – 4',
-    status: 'COMPLETED',
-    statusLabel: '100% Structurally Cast',
-    typology: 'Clubhouse, Foyer & Parking',
-    ceilingHeight: '24-Ft Grand Lobby',
+    level: 8,
+    levelLabel: 'Level 08 (Mid-Rise River Sanctuary)',
+    altitudeFt: 85,
+    tierName: 'Riverside Residences',
+    tierCategory: 'RIVERSIDE',
+    typology: '3 BHK Imperial Residence',
+    carpetArea: '1,380 Sq. Ft.',
+    superArea: '1,720 Sq. Ft.',
+    ceilingHeight: '11.0-Ft Floor to Ceiling',
+    orientation: 'Riverside Promenade & Lush Riverbanks Canopy',
+    stage: 'RCC Monolithic Shear Wall Complete • Blockwork Underway',
+    progressPercent: 35,
+    priceStarting: '₹1.25 Cr*',
     highlights: [
-      'Deep basalt raft foundation & columns completed',
-      'Multi-level parking with dedicated EV ducting',
-      '40,000 sq. ft. resort deck and infinity lap pool',
+      'Direct treetop and water reflection vistas',
+      'High-performance acoustic double-glazed curtain wall',
+      '2 dedicated covered parking slots',
     ],
-    imageUrl:
+    droneViewUrl:
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=85',
+    exteriorCropUrl:
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    level: 4,
+    levelLabel: 'Level 04 (Grand Podium & Horizon Deck)',
+    altitudeFt: 45,
+    tierName: 'Podium Lifestyle & Amenity Precinct',
+    tierCategory: 'PODIUM',
+    typology: 'Clubhouse, Lap Pool & Garden Suites',
+    carpetArea: '40,000 Sq. Ft. Deck',
+    superArea: 'Multi-Level Precinct',
+    ceilingHeight: '24-Ft Grand Arrival Foyer',
+    orientation: 'Acre-Wide Landscaped Zen Groves & Horizon Pool Deck',
+    stage: '100% Structurally Cast • MEP & Waterproofing Underway',
+    progressPercent: 100,
+    priceStarting: 'Lifestyle Amenities',
+    highlights: [
+      '50-meter temperature-regulated infinity lap pool',
+      'Double-height grand entrance lobby with Italian travertine marble',
+      'Triple-level podium parking with smart valet routing & EV chargers',
+    ],
+    droneViewUrl:
+      'https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&w=1800&q=85',
+    exteriorCropUrl:
+      'https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=1200&q=80',
   },
 ];
 
@@ -89,16 +166,24 @@ interface TowerElevationVisualizerProps {
 }
 
 export default function TowerElevationVisualizer({ onOpenEnquiry }: TowerElevationVisualizerProps) {
-  const [selectedTierId, setSelectedTierId] = useState<string>('tier-midrise');
+  const [selectedLevelNum, setSelectedLevelNum] = useState<number>(14);
+  const [viewMode, setViewMode] = useState<'3D_HUD' | 'DRONE_BALCONY'>('3D_HUD');
   const { ref: sectionRef, isVisible } = useScrollReveal({ threshold: 0.1 });
 
-  const activeTier = towerTiers.find((t) => t.id === selectedTierId) || towerTiers[1];
+  const activeLevel =
+    floorLevels.find((fl) => fl.level === selectedLevelNum) || floorLevels[2];
 
-  const handleEnquiry = () => {
+  const handleEnquiry = (contextMsg?: string) => {
     if (onOpenEnquiry) {
       onOpenEnquiry();
     } else if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('open-enquiry-modal'));
+      window.dispatchEvent(
+        new CustomEvent('open-enquiry-modal', {
+          detail: {
+            projectName: `Level ${activeLevel.level} - ${activeLevel.typology} (${activeLevel.tierName})`,
+          },
+        })
+      );
     }
   };
 
@@ -106,166 +191,269 @@ export default function TowerElevationVisualizer({ onOpenEnquiry }: TowerElevati
     <section
       id="tower-elevation"
       ref={sectionRef}
-      className="relative py-16 sm:py-28 bg-[#040B18] text-white overflow-hidden"
+      className="relative py-16 sm:py-28 bg-[#02060F] text-white overflow-hidden"
     >
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C59B27]/30 to-transparent" />
+      {/* Decorative Glow Grid */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C59B27]/40 to-transparent" />
+      <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-[#00F2FE]/5 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] rounded-full bg-[#C59B27]/5 blur-3xl pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         {/* Section Header */}
-        <div className={`text-center max-w-2xl mx-auto mb-10 sm:mb-16 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#C59B27]/10 border border-[#C59B27]/30 text-[#EAD07C] text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase mb-3 sm:mb-4">
-            <HardHat className="w-3.5 h-3.5 text-[#C59B27]" />
-            <span>VERTICAL SLAB VISUALIZER</span>
+        <div className={`text-center max-w-3xl mx-auto mb-10 sm:mb-14 reveal-fade-up ${isVisible ? 'is-visible' : ''}`}>
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#4FACFE] text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase mb-3 sm:mb-4 shadow-lg shadow-[#00F2FE]/10">
+            <Layers className="w-3.5 h-3.5 text-[#00F2FE] animate-pulse" />
+            <span>INTERACTIVE 3D SKYSCRAPER HUD &amp; ELEVATION</span>
           </div>
 
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-light font-serif text-white tracking-tight mb-2 sm:mb-3">
-            Tower Elevation & Floor Tiers
+            Select Your Altitude &amp; View Corridor
           </h2>
 
-          <p className="text-xs sm:text-base text-slate-300/80 font-light leading-relaxed">
-            Select a vertical tier to inspect real-time construction progress and residence allocations.
+          <p className="text-xs sm:text-base text-slate-300/80 font-light leading-relaxed mb-6 sm:mb-8">
+            Experience real-time structural telemetry, live slab progression, and simulated drone balcony vistas from each architectural tier prior to final handover.
           </p>
+
+          {/* Dual Experience Mode Switcher (HUD vs Drone Balcony View) */}
+          <div className="inline-flex items-center p-1 rounded-full bg-[#061024] border border-white/10 shadow-2xl">
+            <button
+              type="button"
+              onClick={() => setViewMode('3D_HUD')}
+              className={`px-5 py-2 rounded-full text-xs uppercase tracking-wider font-semibold transition-all duration-300 flex items-center space-x-2 ${
+                viewMode === '3D_HUD'
+                  ? 'bg-gradient-to-r from-[#B2881E] to-[#EAD07C] text-[#040B18] shadow-lg shadow-[#C59B27]/30 scale-105'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Building className="w-3.5 h-3.5" />
+              <span>3D Tower Telemetry HUD</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setViewMode('DRONE_BALCONY')}
+              className={`px-5 py-2 rounded-full text-xs uppercase tracking-wider font-semibold transition-all duration-300 flex items-center space-x-2 ${
+                viewMode === 'DRONE_BALCONY'
+                  ? 'bg-gradient-to-r from-[#00F2FE] to-[#4FACFE] text-[#040B18] shadow-lg shadow-[#00F2FE]/30 scale-105'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Plane className="w-3.5 h-3.5" />
+              <span>Drone Balcony Altitude Simulator</span>
+            </button>
+          </div>
         </div>
 
-        {/* Visualizer Interactive Stage */}
-        <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 items-center reveal-scale ${isVisible ? 'is-visible' : ''}`}>
-          {/* Left Column: Tower Vertical Diagram */}
-          <div className="lg:col-span-5 flex flex-col space-y-2.5">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-slate-400 font-semibold mb-1 block">
-              28-STOREY ARCHITECTURAL STACK
-            </span>
+        {/* Main Interactive Stage */}
+        <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch reveal-scale ${isVisible ? 'is-visible' : ''}`}>
+          {/* LEFT COLUMN: Vertical Skyscraper Tier Selector (Levels 04 to 28) */}
+          <div className="lg:col-span-4 flex flex-col justify-between space-y-2.5 bg-[#061024]/80 backdrop-blur-xl p-4 sm:p-5 rounded-3xl border border-white/10 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-white/10 text-[11px] text-slate-400 font-mono">
+              <span className="flex items-center space-x-1.5 text-[#EAD07C]">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>ARCHITECTURAL SLAB MATRIX</span>
+              </span>
+              <span>28 TOTAL LEVELS</span>
+            </div>
 
-            {towerTiers.map((tier) => {
-              const isSelected = selectedTierId === tier.id;
-              return (
-                <button
-                  key={tier.id}
-                  type="button"
-                  onClick={() => setSelectedTierId(tier.id)}
-                  className={`relative p-4 rounded-2xl text-left transition-all duration-300 border flex items-center justify-between group overflow-hidden ${
-                    isSelected
-                      ? 'bg-gradient-to-r from-[#C59B27]/20 via-[#0A1B3B] to-[#040B18] border-[#C59B27] shadow-xl ring-1 ring-[#C59B27]/40'
-                      : 'bg-white/[0.02] border-white/10 hover:border-white/20 hover:bg-white/[0.04]'
-                  }`}
-                >
-                  <div className="flex items-center space-x-3.5 z-10">
-                    {/* Visual Floor Indicator Block */}
-                    <div
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center font-mono text-xs font-bold transition-all ${
-                        isSelected
-                          ? 'bg-[#C59B27] text-[#040B18] shadow-md shadow-[#C59B27]/30 scale-105'
-                          : 'bg-white/10 text-slate-300 group-hover:bg-white/15'
-                      }`}
-                    >
-                      {tier.id === 'tier-penthouse'
-                        ? 'PH'
-                        : tier.id === 'tier-highrise'
-                        ? 'L3'
-                        : tier.id === 'tier-midrise'
-                        ? 'L2'
-                        : 'L1'}
-                    </div>
-
-                    <div>
-                      <div className="flex items-center space-x-2">
-                        <h4 className={`text-sm font-serif ${isSelected ? 'text-[#EAD07C]' : 'text-white'}`}>
-                          {tier.name}
-                        </h4>
-                        <span className="text-[10px] font-mono text-slate-400">({tier.floors})</span>
-                      </div>
-                      <span className="text-[11px] text-slate-400 block font-light">
-                        {tier.typology}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Status Indicator Pill */}
-                  <div className="z-10 shrink-0">
-                    {tier.status === 'COMPLETED' ? (
-                      <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-semibold flex items-center space-x-1">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                        <span>Completed</span>
-                      </span>
-                    ) : tier.status === 'IN_PROGRESS' ? (
-                      <span className="px-2 py-0.5 rounded-full bg-[#C59B27]/20 text-[#EAD07C] text-[10px] font-semibold flex items-center space-x-1 border border-[#C59B27]/40">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#C59B27] animate-ping" />
-                        <span>Active 14th Slab</span>
-                      </span>
-                    ) : (
-                      <span className="px-2 py-0.5 rounded-full bg-white/5 text-slate-400 text-[10px] font-medium border border-white/10">
-                        Pre-Launch
-                      </span>
+            {/* Vertical Tier Selector Buttons with Laser Beam Highlight Effect */}
+            <div className="space-y-2 flex-1 flex flex-col justify-around py-1">
+              {floorLevels.map((fl) => {
+                const isSelected = fl.level === selectedLevelNum;
+                return (
+                  <button
+                    key={fl.level}
+                    type="button"
+                    onClick={() => setSelectedLevelNum(fl.level)}
+                    className={`relative w-full p-3 sm:p-3.5 rounded-2xl text-left transition-all duration-300 border flex items-center justify-between group overflow-hidden ${
+                      isSelected
+                        ? 'bg-gradient-to-r from-white/10 to-white/5 border-[#C59B27] shadow-xl shadow-[#C59B27]/15 ring-1 ring-[#C59B27]/50'
+                        : 'bg-white/[0.02] border-white/5 hover:border-white/20 hover:bg-white/[0.05]'
+                    }`}
+                  >
+                    {/* Glowing Scanline Indicator when selected */}
+                    {isSelected && (
+                      <div className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-[#00F2FE] via-[#C59B27] to-[#EAD07C]" />
                     )}
-                  </div>
 
-                  {/* Subtle active tier ambient line */}
-                  {isSelected && (
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#EAD07C] via-[#C59B27] to-[#B2881E]" />
-                  )}
-                </button>
-              );
-            })}
+                    <div className="pl-2">
+                      <div className="flex items-center space-x-2">
+                        <span className={`text-xs font-mono font-bold ${isSelected ? 'text-[#00F2FE]' : 'text-slate-400'}`}>
+                          L{fl.level < 10 ? `0${fl.level}` : fl.level}
+                        </span>
+                        <span className={`text-[11px] font-semibold tracking-wider uppercase truncate max-w-[170px] sm:max-w-[210px] ${
+                          isSelected ? 'text-white' : 'text-slate-300'
+                        }`}>
+                          {fl.tierName}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-[10px] text-slate-400 font-light mt-0.5 pl-6">
+                        <span>{fl.typology}</span>
+                        <span>•</span>
+                        <span className="text-[#EAD07C] font-mono">{fl.altitudeFt} FT AGL</span>
+                      </div>
+                    </div>
+
+                    <div className="shrink-0 flex items-center space-x-1.5">
+                      <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono uppercase ${
+                        fl.progressPercent === 100
+                          ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                          : 'bg-amber-500/10 text-amber-300 border border-amber-500/20'
+                      }`}>
+                        {fl.progressPercent === 100 ? 'READY' : `${fl.progressPercent}%`}
+                      </span>
+                      <ChevronRight className={`w-4 h-4 transition-transform ${isSelected ? 'text-[#00F2FE] translate-x-0.5' : 'text-slate-600'}`} />
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Bottom Regulatory Proof Pill */}
+            <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[10px] text-slate-400 font-mono">
+              <span className="flex items-center">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#C59B27] mr-1" />
+                <span>MahaRERA: P52100028912</span>
+              </span>
+              <span className="text-[#EAD07C]">Zero Brokerage</span>
+            </div>
           </div>
 
-          {/* Right Column: Active Tier Detail Showcase */}
-          <div className="lg:col-span-7">
-            <div className="relative rounded-3xl overflow-hidden border border-[#C59B27]/40 bg-[#061024] p-6 sm:p-8 shadow-2xl space-y-6">
-              {/* High-Resolution Render */}
-              <div className="relative h-60 sm:h-72 rounded-2xl overflow-hidden border border-white/10">
-                <Image
-                  src={activeTier.imageUrl}
-                  alt={activeTier.name}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 55vw"
-                  className="object-cover object-center transition-all duration-700 hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#061024] via-transparent to-transparent opacity-70" />
+          {/* RIGHT COLUMN: Cyber-Luxury Visual Canvas & Floating Telemetry HUD */}
+          <div className="lg:col-span-8 relative rounded-3xl overflow-hidden border border-white/15 bg-black shadow-2xl flex flex-col min-h-[460px] sm:min-h-[580px]">
+            {/* Visual Frame: Either 3D Tower Render OR Drone Balcony Elevation Panorama */}
+            <div className="relative flex-1 w-full overflow-hidden">
+              <Image
+                key={`${viewMode}-${activeLevel.level}`}
+                src={viewMode === '3D_HUD' ? activeLevel.exteriorCropUrl : activeLevel.droneViewUrl}
+                alt={activeLevel.levelLabel}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 65vw"
+                className="object-cover object-center animate-ken-burns scale-105 transition-all duration-700"
+              />
 
-                {/* Status Over Image */}
-                <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-[#C59B27]/40 text-[#EAD07C] text-[10px] font-semibold uppercase tracking-wider">
-                  {activeTier.statusLabel}
+              {/* Cinematic Vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#040B18] via-[#040B18]/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#040B18]/60 via-transparent to-[#040B18]/40" />
+
+              {/* Laser Scan Horizontal Line (Cyber Aesthetic) */}
+              <div className="absolute top-1/2 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#00F2FE] to-transparent shadow-[0_0_12px_#00F2FE] pointer-events-none" />
+
+              {/* On-Screen Top Telemetry Status Badges */}
+              <div className="absolute top-4 inset-x-4 flex items-center justify-between z-20 pointer-events-none">
+                <div className="px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-[#00F2FE]/40 text-[#4FACFE] text-[10px] sm:text-xs font-mono font-semibold flex items-center space-x-2 pointer-events-auto">
+                  <span className="w-2 h-2 rounded-full bg-[#00F2FE] animate-ping" />
+                  <span>LEVEL {activeLevel.level} TELEMETRY</span>
+                  <span>•</span>
+                  <span>ALTITUDE {activeLevel.altitudeFt} FT</span>
                 </div>
 
-                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-slate-200">
-                  <span className="font-serif text-white text-base sm:text-lg">{activeTier.floors}</span>
-                  <span className="font-mono text-[11px] text-[#EAD07C]">{activeTier.ceilingHeight}</span>
+                <div className="px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/20 text-[10px] sm:text-xs text-white font-mono flex items-center space-x-1.5 pointer-events-auto">
+                  <Compass className="w-3.5 h-3.5 text-[#C59B27]" />
+                  <span>ORIENTATION: 285° WNW</span>
                 </div>
               </div>
 
-              {/* Tier Specs */}
-              <div>
-                <h3 className="text-xl sm:text-2xl font-serif text-white mb-1">
-                  {activeTier.name}
-                </h3>
-                <p className="text-xs text-[#EAD07C] tracking-wider uppercase font-semibold mb-3">
-                  {activeTier.typology}
+              {/* View Mode Tag at Bottom-Left of Visual Canvas */}
+              <div className="absolute bottom-4 left-4 z-20 pointer-events-none">
+                <span className="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/10 text-[10px] font-mono text-slate-300">
+                  {viewMode === '3D_HUD' ? '3D ARCHITECTURAL SLAB SCAN' : 'SIMULATED DRONE BALCONY VISTA'}
+                </span>
+              </div>
+            </div>
+
+            {/* Bottom Glass Telemetry Panel (Specs, Progress & Direct Actions) */}
+            <div className="p-5 sm:p-7 bg-[#040B18]/95 backdrop-blur-2xl border-t border-white/10 space-y-4 relative z-20">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div>
+                  <div className="flex items-center space-x-2 text-[10px] font-mono uppercase text-[#00F2FE] mb-1">
+                    <HardHat className="w-3.5 h-3.5 text-[#C59B27]" />
+                    <span>{activeLevel.stage}</span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-serif text-white font-normal">
+                    {activeLevel.typology} — {activeLevel.tierName}
+                  </h3>
+                </div>
+
+                <div className="text-left md:text-right">
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block">
+                    Starting Pre-Launch Tranche
+                  </span>
+                  <span className="text-xl sm:text-2xl font-serif text-[#EAD07C] font-semibold">
+                    {activeLevel.priceStarting}
+                  </span>
+                </div>
+              </div>
+
+              {/* 4 Core Architectural Telemetry Chips */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 py-2 border-y border-white/10">
+                <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+                  <span className="text-[9px] uppercase tracking-wider text-slate-400 block mb-0.5 font-mono">
+                    Carpet Area
+                  </span>
+                  <span className="text-xs sm:text-sm font-semibold text-white font-mono">
+                    {activeLevel.carpetArea}
+                  </span>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+                  <span className="text-[9px] uppercase tracking-wider text-slate-400 block mb-0.5 font-mono">
+                    Clear Ceiling
+                  </span>
+                  <span className="text-xs sm:text-sm font-semibold text-[#00F2FE] font-mono">
+                    {activeLevel.ceilingHeight}
+                  </span>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+                  <span className="text-[9px] uppercase tracking-wider text-slate-400 block mb-0.5 font-mono">
+                    Structural Status
+                  </span>
+                  <span className="text-xs sm:text-sm font-semibold text-[#EAD07C] flex items-center space-x-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                    <span>{activeLevel.progressPercent}% Built</span>
+                  </span>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5">
+                  <span className="text-[9px] uppercase tracking-wider text-slate-400 block mb-0.5 font-mono">
+                    Client Brokerage
+                  </span>
+                  <span className="text-xs sm:text-sm font-semibold text-emerald-400 font-mono">
+                    0% Commission
+                  </span>
+                </div>
+              </div>
+
+              {/* View Highlights & Decisive Actions */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-1">
+                <p className="text-xs text-slate-300 font-light truncate max-w-md">
+                  <span className="text-[#C59B27] font-semibold mr-1.5">Horizon:</span>
+                  {activeLevel.orientation}
                 </p>
 
-                <div className="space-y-2 pt-2 border-t border-white/10">
-                  {activeTier.highlights.map((h, i) => (
-                    <div key={i} className="flex items-start space-x-2 text-xs sm:text-sm text-slate-300 font-light">
-                      <Sparkles className="w-3.5 h-3.5 text-[#C59B27] shrink-0 mt-0.5" />
-                      <span>{h}</span>
-                    </div>
-                  ))}
+                <div className="flex items-center space-x-3 w-full sm:w-auto">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setViewMode(viewMode === '3D_HUD' ? 'DRONE_BALCONY' : '3D_HUD')
+                    }
+                    className="flex-1 sm:flex-initial px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-xs text-slate-200 transition-all flex items-center justify-center space-x-1.5"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-[#00F2FE]" />
+                    <span>{viewMode === '3D_HUD' ? 'View Drone Vista' : 'View Tower HUD'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleEnquiry()}
+                    className="flex-1 sm:flex-initial px-6 py-2.5 rounded-full gold-shimmer-btn text-[#040B18] text-xs font-bold tracking-wider uppercase transition-all hover:scale-105 active:scale-95 flex items-center justify-center space-x-1.5 shadow-lg shadow-[#C59B27]/25"
+                  >
+                    <span>Reserve Hardhat Visit</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
                 </div>
-              </div>
-
-              {/* Action Button */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-white/10">
-                <span className="text-[11px] text-slate-400 flex items-center">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#C59B27] mr-1.5" />
-                  <span>Construction-Linked Payment Schedule</span>
-                </span>
-
-                <button
-                  type="button"
-                  onClick={handleEnquiry}
-                  className="w-full sm:w-auto px-6 py-2.5 rounded-full font-semibold text-xs tracking-widest uppercase text-[#040B18] gold-shimmer-btn shadow-md shadow-[#C59B27]/25 flex items-center justify-center space-x-2 hover:scale-105 transition-all"
-                >
-                  <span>Inquire About {activeTier.floors}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
               </div>
             </div>
           </div>

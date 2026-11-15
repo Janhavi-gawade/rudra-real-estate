@@ -8,12 +8,13 @@ export const metadata: Metadata = {
   title: `${projectConfig.identity.projectName} | ${projectConfig.identity.tagline}`,
   description: projectConfig.hero.subheadline,
   keywords: [
-    'The Riviera Reserve Pune',
-    'Luxury Apartments Keshav Nagar',
-    'Pune Sky Mansions',
-    'Koregaon Park Luxury Flats',
-    'Riverfront Residences Pune',
+    'Rudra Real Estate Pune',
+    'Real Estate Broker Pune',
     'Under Construction Luxury Projects Pune',
+    'Pre Launch Properties Pune',
+    'Keshav Nagar Mundhwa Luxury Apartments',
+    'Koregaon Park Annexe Flats',
+    'Zero Brokerage Real Estate Pune',
   ],
   openGraph: {
     title: `${projectConfig.identity.projectName} | ${projectConfig.identity.tagline}`,
